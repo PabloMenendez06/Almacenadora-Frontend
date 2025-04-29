@@ -4,7 +4,7 @@ export const Input = ({
     showErrorMessage,
     validationMessage,
     textArea,
-    ...props  // <-- Captura todo lo que viene de register
+    ...props  
 }) => {
 
     return (
