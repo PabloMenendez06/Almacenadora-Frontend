@@ -1,26 +1,25 @@
 .auth-container {
     width: 100%;
-    min-height: 100vh; /* opcional: mínimo para que quede bien centrado */
+    min-height: 100vh; 
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 0; /* separa un poco arriba/abajo */
+    padding: 30px 0; 
+    background-color: #f1f5f8; 
 }
 
 .login-container, .register-container {
     width: 500px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* cambia 'space-evenly' por 'center' */
-    box-shadow: 10px 10px 10px #0b336b;
+    justify-content: center; 
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); 
     padding: 30px 20px;
-    background-color: white;
+    background-color: #ffffff;
 }
-
-
 
 .auth-form {
     width: 100%;
@@ -33,15 +32,17 @@
     margin: 8px 0;
     padding: 10px;
     width: 90%;
-    border: 1px solid #ccc;
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
+    background-color: #fafafa; 
+    color: #333;
 }
 
 .auth-form button {
     margin-top: 20px;
     width: 95%;
     padding: 10px;
-    background-color: #0b336b;
+    background-color: #0984e3; 
     color: white;
     border: none;
     border-radius: 8px;
@@ -62,6 +63,7 @@
     text-align: left;
     margin-top: 10px;
     font-weight: bold;
+    color: #2c3e50;
 }
 
 .auth-form-logo-container {
@@ -70,7 +72,7 @@
 
 .auth-form-switch-label {
     margin-top: 10px;
-    color: #2b7df0;
+    color: #0984e3; 
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;

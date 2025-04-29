@@ -3,18 +3,19 @@ import './sidebar.css'
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo_size.jpg";
+import profile from "../../assets/img/profile.png";
 import { useUserDetails } from "../../shared/hooks";
 import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
   IconArrowLeft,
-  IconBrandTabler,
   IconSettings,
   IconUserBolt,
+  IconAlignBoxCenterMiddle,
+  IconApple
 } from "@tabler/icons-react";
-import { GiCellarBarrels } from "react-icons/gi";
+import { TiClipboard } from "react-icons/ti";
 import { motion } from "motion/react";
 import { cn } from "../../lib/utils";
-
 export function SidebarDemo() {
   const { isLogged, logout } = useUserDetails();
   const navigate = useNavigate();
@@ -32,9 +33,9 @@ export function SidebarDemo() {
 
   const links = [
     {
-      label: "Dashboard",
-      onClick: () => handleNavigate("/dashboard"),
-      icon: <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      label: "Category",
+      onClick: () => handleNavigate("/auth/category"),
+      icon: <IconAlignBoxCenterMiddle abler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Provider",
@@ -42,14 +43,14 @@ export function SidebarDemo() {
       icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
-      label: "Settings",
-      onClick: () => handleNavigate("/settings"),
-      icon: <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      label: "History",
+      onClick: () => handleNavigate("/auth/History"),
+      icon: <TiClipboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Products",
-      onClick: () => handleNavigate("/products"),
-      icon: <GiCellarBarrels className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+      onClick: () => handleNavigate("/auth/products"),
+      icon: <IconApple className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
   ];
 
@@ -99,11 +100,11 @@ export function SidebarDemo() {
             <div className="sidebar-footer">
               <SidebarLink
                 link={{
-                  label: "Almacenadora",
+                  label: "User",
                   href: "#",
                   icon: (
                     <img
-                      src={logo}
+                      src={profile}
                       className="sidebar-avatar h-7 w-7 shrink-0 rounded-full"
                       width={50}
                       height={50}
