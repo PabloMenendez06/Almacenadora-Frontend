@@ -1,0 +1,87 @@
+.auth-container {
+    width: 100%;
+    min-height: 100vh; /* opcional: mínimo para que quede bien centrado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0; /* separa un poco arriba/abajo */
+}
+
+.login-container, .register-container {
+    width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* cambia 'space-evenly' por 'center' */
+    box-shadow: 10px 10px 10px #0b336b;
+    padding: 30px 20px;
+    background-color: white;
+}
+
+
+
+.auth-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-form input {
+    margin: 8px 0;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.auth-form button {
+    margin-top: 20px;
+    width: 95%;
+    padding: 10px;
+    background-color: #0b336b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-form button:hover {
+    opacity: 0.8;
+}
+
+.auth-form button:disabled {
+    opacity: 0.3;
+}
+
+.auth-form-label {
+    width: 90%;
+    text-align: left;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.auth-form-logo-container {
+    margin-bottom: 20px;
+}
+
+.auth-form-switch-label {
+    margin-top: 10px;
+    color: #2b7df0;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-form-switch-label:hover {
+    opacity: 0.8;
+}
+
+.auth-form-validation-message {
+    color: red;
+    margin-top: 10px;
+}
