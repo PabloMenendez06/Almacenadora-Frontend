@@ -1,6 +1,6 @@
 
 import './sidebar.css'
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo_size.jpg";
 import profile from "../../assets/img/profile.png";
@@ -34,27 +34,27 @@ export function SidebarDemo() {
   const links = [
     {
       label: "Category",
-      onClick: () => handleNavigate("/auth/category"),
+      onClick: () => handleNavigate("/category"),
       icon: <IconAlignBoxCenterMiddle abler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Provider",
-      onClick: () => handleNavigate("/auth/provider"),
+      onClick: () => handleNavigate("/provider"),
       icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "History",
-      onClick: () => handleNavigate("/auth/history"),
+      onClick: () => handleNavigate("/history"),
       icon: <TiClipboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Products",
-      onClick: () => handleNavigate("/auth/product"),
+      onClick: () => handleNavigate("/product"),
       icon: <IconApple className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Clients",
-      onClick: () => handleNavigate("/auth/client"),
+      onClick: () => handleNavigate("/client"),
       icon: <IconCalendarUser className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
   ];
@@ -106,7 +106,7 @@ export function SidebarDemo() {
               <SidebarLink
                 link={{
                   label: "User",
-                  href: "#",
+                  href: "/settings",
                   icon: (
                     <img
                       src={profile}
@@ -128,14 +128,14 @@ export function SidebarDemo() {
 }
 
 export const Logo = () => (
-  <a href="#" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
+  <a href="/" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
     <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
     <img
       src={logo}
       className="sidebar-avatar h-7 w-7 shrink-0 rounded-full"
       width={50}
       height={50}
-      alt="Avatar"
+      alt="logo"
     />
     
     <motion.span
@@ -148,7 +148,7 @@ export const Logo = () => (
 );
 
 export const LogoIcon = () => (
-  <a href="#" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
+  <a href="/" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
     <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
   </a>
 );
