@@ -8,7 +8,7 @@ import { useUserDetails } from "../../shared/hooks";
 import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
   IconArrowLeft,
-  IconSettings,
+  IconCalendarUser,
   IconUserBolt,
   IconAlignBoxCenterMiddle,
   IconApple
@@ -39,18 +39,23 @@ export function SidebarDemo() {
     },
     {
       label: "Provider",
-      onClick: () => handleNavigate("/auth/providers"),
+      onClick: () => handleNavigate("/auth/provider"),
       icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "History",
-      onClick: () => handleNavigate("/auth/History"),
+      onClick: () => handleNavigate("/auth/history"),
       icon: <TiClipboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
     {
       label: "Products",
-      onClick: () => handleNavigate("/auth/products"),
+      onClick: () => handleNavigate("/auth/product"),
       icon: <IconApple className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
+    },
+    {
+      label: "Clients",
+      onClick: () => handleNavigate("/auth/client"),
+      icon: <IconCalendarUser className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
     },
   ];
 
