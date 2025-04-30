@@ -48,7 +48,7 @@ export const Login = ({ switchAuthHandler }) => {
         validationMessage={errors.password?.message}
       />
         <button type="submit" disabled={isLoading || !isValid}>
-          Log in
+          Login
         </button>
       </form>
       <span onClick={switchAuthHandler} className="auth-form-switch-label">

@@ -44,6 +44,17 @@ export const register = async(data) => {
     }
 }
 
+export const createProvider = async(data) => {
+    try {
+        return await apiClient.post('/provider/', data)
+    } catch (error) {
+        return{
+            error: true,
+            e
+        }
+    }
+}
+
 const checkResponseStatus = (e) => {
     const responseStatus = e?.response.status
 
