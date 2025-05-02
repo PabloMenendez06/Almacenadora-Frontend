@@ -1,23 +1,67 @@
-import { SidebarDemo } from "../../components/navbars/sidevbar"
-import { LoadingSpinner } from "../../components/loadingSpinner"
-import {CreateProvider} from "../../components/CreateProvider"
-import { useUserDetails } from "../../shared/hooks"
-
-import '../Page.css'
+import { useCallback, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ListProviders } from "../../components/ListProvider";
+import { CreateProvider } from "../../components/CreateProvider";
+import { SidebarDemo } from "../../components/navbars/sidevbar";
+import '../Page.css';
 
 export const ProviderPage = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [providerToEdit, setProviderToEdit] = useState(null);
 
-  const handleAuthPageToggle = () => {
-    setIsLogin((prev) => !prev)
-  }
+  const handleOpenForm = useCallback(() => {
+    setProviderToEdit(null);
+    setShowForm(true);
+  }, []);
+
+  const handleCloseForm = useCallback(() => {
+    setProviderToEdit(null);
+    setShowForm(false);
+  }, []);
+
   return (
-    <div className="dashboard-container">
-      <SidebarDemo className="sidebar-demo" />
-      <div className="welcome-message">
-        <h1>¡Bienvenido a proveedores!</h1>
-        <p>Gracias por usar nuestro sistema. Usa el menú lateral para navegar.</p>
+    <div className="provider-container">
+      <SidebarDemo />
+
+      <div className="provider-content">
+        <div className="header">
+          <h1>Proveedores</h1>
+          <button className="provider-button" onClick={handleOpenForm}>
+            Registrar nuevo proveedor
+          </button>
+        </div>
+
+        <div className="provider-body">
+          <motion.div
+            className="list-wrapper"
+            animate={{ width: showForm ? "70%" : "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+          >
+            <ListProviders
+              setProviderToEdit={setProviderToEdit}
+              setShowForm={setShowForm}
+            />
+          </motion.div>
+
+          <AnimatePresence>
+            {showForm && (
+              <motion.div
+                className="provider-form-panel"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "tween", duration: 0.3 }}
+              >
+                <CreateProvider
+                  onClose={handleCloseForm}
+                  providerToEdit={providerToEdit}
+                  setProviderToEdit={setProviderToEdit}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-      <CreateProvider switchAuthHandler={handleAuthPageToggle}/>
     </div>
-  )
-}
+  );
+};

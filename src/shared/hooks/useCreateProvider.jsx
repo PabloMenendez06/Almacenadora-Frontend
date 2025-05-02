@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 
 export const useCreateProvider = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const createProvider = async (name, email, number) => {
@@ -17,10 +16,16 @@ export const useCreateProvider = () => {
       setIsLoading(false);
 
       if (response.error) {
-        return toast.error(response.error?.response?.data || 'Ocurrio un error al registrar el proveedor, intenta de nuevo');
+
+        if (response.error?.response?.status === 400) {
+          toast.error("El proveedor ya existe.");
+        } else {
+          toast.error(response.error?.response?.data || 'Ocurrio un error al registrar el proveedor, intenta de nuevo');
+        }
+        return;
       }
 
-      const { providerDetails } = response.data;
+      const { providerDetails } = response(name,email,number);
 
       localStorage.setItem('provider', JSON.stringify(providerDetails));
 

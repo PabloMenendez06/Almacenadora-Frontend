@@ -44,9 +44,9 @@ export const register = async(data) => {
     }
 }
 
-export const createProvider = async (data) => {
+export const createProvider = async (name,email,number) => {
     try {
-        const response = await apiClient.post('/provider/', data,{
+        const response = await apiClient.post('/provider', {name:name,email:email,number:number},{
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -59,7 +59,34 @@ export const createProvider = async (data) => {
       };
     }
   };
+
+  export const listProviders = async () => {
+    try {
+      const response = await apiClient.get('/provider');  
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los proveedores:', error);
+      throw error; 
+    }
+  };
   
+  export const updateProvider = async(id, data) => {
+    return await apiClient.put(`/provider/${id}`, data,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  };
+
+  export const deleteProvider = async(id) => {
+    return await apiClient.delete(`/provider/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  };
+
+
 
 const checkResponseStatus = (e) => {
     const responseStatus = e?.response.status

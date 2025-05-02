@@ -1,6 +1,5 @@
-
-import './sidebar.css'
-import  { useState } from "react";
+import './sidebar.css';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo_size.jpg";
 import profile from "../../assets/img/profile.png";
@@ -14,12 +13,13 @@ import {
   IconApple
 } from "@tabler/icons-react";
 import { TiClipboard } from "react-icons/ti";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { cn } from "../../lib/utils";
+
 export function SidebarDemo() {
   const { isLogged, logout } = useUserDetails();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true); 
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -32,65 +32,26 @@ export function SidebarDemo() {
   };
 
   const links = [
+    { label: "Category", onClick: () => handleNavigate("/category"), icon: <IconAlignBoxCenterMiddle className="icon" /> },
+    { label: "Provider", onClick: () => handleNavigate("/provider"), icon: <IconUserBolt className="icon" /> },
+    { label: "History", onClick: () => handleNavigate("/history"), icon: <TiClipboard className="icon" /> },
+    { label: "Products", onClick: () => handleNavigate("/product"), icon: <IconApple className="icon" /> },
+    { label: "Clients", onClick: () => handleNavigate("/client"), icon: <IconCalendarUser className="icon" /> },
     {
-      label: "Category",
-      onClick: () => handleNavigate("/category"),
-      icon: <IconAlignBoxCenterMiddle  className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Provider",
-      onClick: () => handleNavigate("/provider"),
-      icon: <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "History",
-      onClick: () => handleNavigate("/history"),
-      icon: <TiClipboard className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Products",
-      onClick: () => handleNavigate("/product"),
-      icon: <IconApple className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
-    {
-      label: "Clients",
-      onClick: () => handleNavigate("/client"),
-      icon: <IconCalendarUser className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    },
+      label: isLogged ? "Logout" : "Login",
+      onClick: isLogged ? handleLogout : () => handleNavigate("/auth"),
+      icon: <IconArrowLeft className="icon" />
+    }
   ];
 
-  if (isLogged) { 
-    links.push({
-      label: "Logout",
-      onClick: () => handleLogout("/"),
-      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    });
-  }else {
-    links.push({
-      label: "Login",
-      onClick: () => handleNavigate("/auth"),
-      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />,
-    });
-  }
-
   return (
-    <div
-      className={cn(
-        "mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800",
-        "h-screen"
-      )}>
+    <div className="flex h-screen w-full overflow-hidden">
+      {/* Sidebar */}
+      <div className={cn("transition-all duration-300", open ? "w-64" : "w-20")}>
         <Sidebar open={open} setOpen={setOpen}>
           <SidebarBody className="sidebar-body justify-between gap-10">
-            <div className="sidebar-content flex-1 flex flex-col overflow-x-hidden overflow-y-auto">
-              {open ? (
-                <div className="sidebar-logo">
-                  <Logo />
-                </div>
-              ) : (
-                <div className="sidebar-logo">
-                  <LogoIcon />
-                </div>
-              )}
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <div className="sidebar-logo">{open ? <Logo /> : <LogoIcon />}</div>
               <div className="sidebar-links mt-8 flex flex-col gap-2">
                 {links.map((link, idx) => (
                   <SidebarLink
@@ -110,9 +71,7 @@ export function SidebarDemo() {
                   icon: (
                     <img
                       src={profile}
-                      className="sidebar-avatar h-7 w-7 shrink-0 rounded-full"
-                      width={50}
-                      height={50}
+                      className="sidebar-avatar"
                       alt="Avatar"
                     />
                   ),
@@ -122,54 +81,40 @@ export function SidebarDemo() {
             </div>
           </SidebarBody>
         </Sidebar>
-      <Dashboard />
+      </div>
+
+      {/* Dashboard */}
+      <div className="flex flex-1 transition-all duration-300 overflow-hidden">
+        <Dashboard />
+      </div>
     </div>
   );
 }
 
-export const Logo = () => (
-  <a href="/" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
-    <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-    <img
-      src={logo}
-      className="sidebar-avatar h-7 w-7 shrink-0 rounded-full"
-      width={50}
-      height={50}
-      alt="logo"
-    />
-    
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="font-medium whitespace-pre text-black dark:text-white">
-      Almacén
-    </motion.span>
+const Logo = () => (
+  <a href="/" className="flex items-center space-x-2 py-1 text-sm font-normal text-black">
+    <div className="h-5 w-6 rounded bg-black dark:bg-white" />
+    <img src={logo} className="sidebar-avatar" alt="logo" />
   </a>
 );
 
-export const LogoIcon = () => (
-  <a href="/" className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black">
-    <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+const LogoIcon = () => (
+  <a href="/" className="flex items-center py-1 text-sm font-normal text-black">
+    <div className="h-5 w-6 rounded bg-black dark:bg-white" />
   </a>
 );
 
 const Dashboard = () => (
-  <div className="flex flex-1">
-    <div className="flex h-full w-full flex-1 flex-col gap-2 rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10 dark:border-neutral-700 dark:bg-neutral-900">
-      <div className="flex gap-2">
-        {[...new Array(4)].map((_, idx) => (
-          <div
-            key={`first-array-demo-${idx}`}
-            className="h-20 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
-        ))}
-      </div>
-      <div className="flex flex-1 gap-2">
-        {[...new Array(2)].map((_, idx) => (
-          <div
-            key={`second-array-demo-${idx}`}
-            className="h-full w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
-        ))}
-      </div>
+  <div className="flex flex-1 flex-col gap-2 p-2 md:p-10 rounded-tl-2xl border bg-white dark:bg-neutral-900 dark:border-neutral-700">
+    <div className="flex gap-2">
+      {[...Array(4)].map((_, idx) => (
+        <div key={idx} className="h-20 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
+      ))}
+    </div>
+    <div className="flex flex-1 gap-2">
+      {[...Array(2)].map((_, idx) => (
+        <div key={idx} className="h-full w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
+      ))}
     </div>
   </div>
 );
