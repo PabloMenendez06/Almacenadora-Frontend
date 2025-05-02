@@ -2,23 +2,25 @@ import { useState } from "react";
 import { logout as logoutHandler } from "./useLogout";
 
 const getUserDetails = () => {
-    const userDetails = localStorage.getItem("user")
-    if(userDetails){
-        return JSON.parse(userDetails)
-    }else{
-        return null
-    }
-}
+  const userDetails = localStorage.getItem("user");
+  return userDetails ? JSON.parse(userDetails) : null;
+};
 
 export const useUserDetails = () => {
-    const [userDetails, setUserDetails] = useState(getUserDetails())
-    const logout = () => {
-        logoutHandler()
-    }
+  const [userDetails, setUserDetails] = useState(getUserDetails());
 
-    return {
-        isLogged: Boolean(userDetails),
-        username: userDetails?.username ? userDetails.username : 'Guest',
-        logout
-    }
-}
+  const logout = () => {
+    logoutHandler();
+    setUserDetails(null);
+  };
+
+  return {
+    isLogged: Boolean(userDetails?.token),
+    username: userDetails?.username ?? "Guest",
+    role: userDetails?.role ?? "",
+    token: userDetails?.token ?? null,
+    logout,
+    setUserDetails,
+    user: userDetails,
+  };
+};

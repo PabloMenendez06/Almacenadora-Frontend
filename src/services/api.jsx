@@ -24,7 +24,7 @@ apiClient.interceptors.request.use(
 
 export const login = async(data) => {
     try {
-        return await apiClient.post('/auth/login', data)
+        return await apiClient.post('auth/login', data)
     } catch (e) {
         return{
             error: true,
@@ -35,7 +35,7 @@ export const login = async(data) => {
 
 export const register = async(data) => {
     try {
-        return await apiClient.post('/auth/register', data)
+        return await apiClient.post('auth/register', data)
     } catch (e) {
         return{
             error: true,
@@ -43,11 +43,82 @@ export const register = async(data) => {
         }
     }
 }
+export const getCategories = async () => {
+  try {
+      const response = await apiClient.get('/category');
+      return response.data;
+  } catch (e) {
+      checkResponseStatus(e);
+      return { error: true, e };
+  }
+};
+
+export const addCategory = async (categoryName) => {
+  const token = JSON.parse(localStorage.getItem('user'))?.token; 
+  console.log(token);
+  try {
+      const response = await apiClient.post('/category', { name: categoryName }, {
+          headers: {
+              'x-token': token, 
+          },
+      });
+      return response.data;
+  } catch (e) {
+      checkResponseStatus(e);  
+      return { error: true, e };
+  }
+};
+
+
+export const createProvider = async (name,email,number) => {
+    try {
+        const response = await apiClient.post('/provider', {name:name,email:email,number:number},{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        return response.data;
+    } catch (error) {
+      return {
+        error: true,
+        response: error.response, 
+      };
+    }
+  };
+
+  export const listProviders = async () => {
+    try {
+      const response = await apiClient.get('/provider');  
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los proveedores:', error);
+      throw error; 
+    }
+  };
+  
+  export const updateProvider = async(id, data) => {
+    return await apiClient.put(`/provider/${id}`, data,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  };
+
+  export const deleteProvider = async(id) => {
+    return await apiClient.delete(`/provider/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  };
+
+
 
 const checkResponseStatus = (e) => {
-    const responseStatus = e?.response.status
+  const responseStatus = e?.response.status
 
-    if(responseStatus){
-        (responseStatus === 401 || responseStatus === 403) && logout()
-    }
+  if(responseStatus){
+      (responseStatus === 401 || responseStatus === 403) && logout()
+  }
+
 }

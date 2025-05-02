@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from '../shared/validators/AuthValidator'; 
 import { useRegister } from '../shared/hooks';
+import toast from "react-hot-toast";
 
 export const Register = ({ switchAuthHandler }) => {
   const { register: registerUser, isLoading } = useRegister();
