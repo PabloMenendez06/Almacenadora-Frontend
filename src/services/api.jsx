@@ -24,7 +24,7 @@ apiClient.interceptors.request.use(
 
 export const login = async(data) => {
     try {
-        return await apiClient.post('/auth/login', data)
+        return await apiClient.post('auth/login', data)
     } catch (e) {
         return{
             error: true,
@@ -35,7 +35,7 @@ export const login = async(data) => {
 
 export const register = async(data) => {
     try {
-        return await apiClient.post('/auth/register', data)
+        return await apiClient.post('auth/register', data)
     } catch (e) {
         return{
             error: true,
@@ -44,16 +44,22 @@ export const register = async(data) => {
     }
 }
 
-export const createProvider = async(data) => {
+export const createProvider = async (data) => {
     try {
-        return await apiClient.post('/provider/', data)
+        const response = await apiClient.post('/provider/', data,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        return response.data;
     } catch (error) {
-        return{
-            error: true,
-            e
-        }
+      return {
+        error: true,
+        response: error.response, 
+      };
     }
-}
+  };
+  
 
 const checkResponseStatus = (e) => {
     const responseStatus = e?.response.status
