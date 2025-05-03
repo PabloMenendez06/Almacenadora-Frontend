@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input } from '../Input';
+import { InputWithField } from '../Input';
 import {
   validateUsername,
   validateUsernameMessage,
@@ -97,7 +97,7 @@ export const UserSettings = ({ settings, saveSettings }) => {
   return (
     <form className="settings-form" onSubmit={handleFormSubmit}>
       {inputs.map((input) => (
-        <Input
+        <InputWithField  
             key={input.field}
             field={input.field}
             label={input.label}

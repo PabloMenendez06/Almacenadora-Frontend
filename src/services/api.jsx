@@ -177,7 +177,8 @@ export const createProvider = async data => {
   export const updateUser = async (data) => {
     try {
       const userId = JSON.parse(localStorage.getItem("user"))?._id;
-      return await apiClient.put(`/editar/${userId}`, data);
+      console.log("ID del localStorage (updateUser):", userId);
+      return await apiClient.put(`/user/editar/${userId}`, data);  
     } catch (e) {
       return {
         error: true,
@@ -186,17 +187,31 @@ export const createProvider = async data => {
     }
   };
   
+  
   export const changePassword = async (data) => {
     try {
       const userId = JSON.parse(localStorage.getItem("user"))?._id;
-      return await apiClient.patch(`/editar/${userId}`, data);
+      if (!userId) {
+        throw new Error("Usuario no encontrado en el localStorage");
+      }
+  
+      
+      const payload = {
+        password: data.password,      
+        newPassword: data.newPassword 
+      };
+  
+      console.log("Datos enviados:", payload);
+      return await apiClient.put(`/user/editar/${userId}`, payload);
     } catch (e) {
       return {
         error: true,
-        e
+        message: e.message || "Error al cambiar la contraseña"
       };
     }
   };
+  
+  
   
 
 

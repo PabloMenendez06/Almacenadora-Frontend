@@ -4,7 +4,7 @@ import {
     validatePassword
 } from "../../shared/validators"
 import { useChangePassword } from "../../shared/hooks";
-import { Input } from '../Input'
+import { InputWithField } from '../Input'
 
 const inputs = [
     {
@@ -72,20 +72,23 @@ export const PasswordSettings = () => {
     return (
         <form className="settings-form">
             {inputs.map((input) => (
-                <Input
+                <InputWithField
                     key={input.field}
                     field={input.field}
                     label={input.label}
                     value={formState[input.field].value}
-                    onChangeHandler={handleInputValueChange}
-                    onBlurHandler={handleInputValidationOnBlur}
+                    onChange={handleInputValueChange}
+                    onBlur={handleInputValidationOnBlur}
                     showErrorMessage={formState[input.field].showError}
                     validationMessage={input.validationMessage}
                     type={input.type}
-                    textarea={input.textarea}
                 />
             ))}
-            <button onClick={handleFormSubmit} disabled={isSubmitButtonDisabled}>
+            <button 
+                onClick={handleFormSubmit} 
+                disabled={isSubmitButtonDisabled}
+                className="update-password-btn"
+            >
                 Actualizar Contraseña
             </button>
         </form>
