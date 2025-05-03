@@ -98,22 +98,22 @@ export const UserSettings = ({ settings, saveSettings }) => {
     <form className="settings-form" onSubmit={handleFormSubmit}>
       {inputs.map((input) => (
         <Input
-          key={input.field}
-          field={input.field}
-          label={input.label}
-          value={formState[input.field].value}
-          onChangeHandler={handleInputValueChange}
-          onBlurHandler={handleInputValidationOnBlur}
-          showErrorMessage={formState[input.field].showError}
-          validationMessage={
-            !formState[input.field].isValid
-              ? input.field === 'username'
-                ? validateUsernameMessage
-                : validateNameMessage
-              : ''
-          }
-          type={input.type}
-          textarea={input.textarea}
+            key={input.field}
+            field={input.field}
+            label={input.label}
+            value={formState[input.field].value}
+            onChange={handleInputValueChange}
+            onBlur={handleInputValidationOnBlur}
+            showErrorMessage={formState[input.field].showError}
+            validationMessage={
+              !formState[input.field].isValid
+                ? input.field === 'username'
+                  ? validateUsernameMessage
+                  : validateNameMessage
+                : ''
+            }
+            type={input.type}
+            textarea={input.textarea}
         />
       ))}
       <button type="submit" disabled={isSubmitButtonDisabled}>

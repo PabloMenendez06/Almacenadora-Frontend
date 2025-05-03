@@ -17,6 +17,7 @@ export const Settings = () => {
             <span>Settings</span>
             <UserSettings settings={userSettings} saveSettings={saveSettings}/>
             <PasswordSettings />
+            <h1>holaaaaaa</h1>
         </div>
     )
 }
