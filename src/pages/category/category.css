@@ -4,7 +4,8 @@
   height: 100vh;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 20px;
+  padding: 0;
+  margin: 0;
 }
 
 /* Contenedor principal para la página de categorías */
@@ -16,9 +17,8 @@
   max-width: 800px;
   padding: 20px;
   margin-top: 20px;
+  margin-left: 280px;  /* Ajusta este valor según el tamaño de tu sidebar */
   overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Formulario de categoría */

@@ -7,20 +7,20 @@ const apiClient = axios.create({
 })
 
 apiClient.interceptors.request.use(
-    (config) => {
-        const useUserDetails = localStorage.getItem('user')
+  (config) => {
+    const useUserDetails = localStorage.getItem('user');
 
-        if(useUserDetails){
-            const token = JSON.parse(useUserDetails).token
-            config.headers.Authorization = `Bearer ${token}`
-        }
-
-        return config;
-    },
-    (e) => {
-        return Promise.reject(e)
+    if (useUserDetails) {
+      const token = JSON.parse(useUserDetails).token;
+      config.headers['x-token'] = token; 
     }
-)
+
+    return config;
+  },
+  (e) => {
+    return Promise.reject(e);
+  }
+);
 
 export const login = async(data) => {
     try {
@@ -57,11 +57,7 @@ export const addCategory = async (categoryName) => {
   const token = JSON.parse(localStorage.getItem('user'))?.token; 
   console.log(token);
   try {
-      const response = await apiClient.post('/category', { name: categoryName }, {
-          headers: {
-              'x-token': token, 
-          },
-      });
+      const response = await apiClient.post('/category', { name: categoryName });
       return response.data;
   } catch (e) {
       checkResponseStatus(e);  
@@ -110,6 +106,41 @@ export const createProvider = async (name,email,number) => {
           Authorization: `Bearer ${token}`,
         },
       });
+  };
+  export const createClient = async (clientData) => {
+    try {
+      const response = await apiClient.post('/client', clientData);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const listClients = async () => {
+    try {
+      const response = await apiClient.get('/client');
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const updateClient = async (id, clientData) => {
+    try {
+      const response = await apiClient.put(`/client/${id}`, clientData);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const deleteClient = async (id) => {
+    try {
+      const response = await apiClient.delete(`/client/${id}`);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
   };
 
 
