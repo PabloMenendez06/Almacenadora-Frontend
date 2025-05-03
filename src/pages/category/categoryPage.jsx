@@ -1,39 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { getCategories, addCategory } from "../../services/api"; // Asegúrate de tener estas funciones en api.js
+import { getCategories, addCategory } from "../../services/api"; 
 import { SidebarDemo } from "../../components/navbars/sidevbar";
 import './category.css'
 
 export const CategoryPage = () => {
-  const [categories, setCategories] = useState([]); // Estado de categorías
-  const [newCategory, setNewCategory] = useState(''); // Estado para el nombre de la nueva categoría
-  const [error, setError] = useState(''); // Estado para manejar errores
+  const [categories, setCategories] = useState([]); 
+  const [newCategory, setNewCategory] = useState('');
+  const [error, setError] = useState(''); 
 
-  // Función para obtener las categorías
   const fetchCategories = async () => {
-    const data = await getCategories(); // Obtener las categorías de la API
+    const data = await getCategories(); 
     if (data.error) {
       setError("Error al obtener las categorías");
     } else {
-      setCategories(data.categories);  // Actualizamos el estado con las categorías obtenidas
+      setCategories(data.categories);  
     }
   };
 
   useEffect(() => {
-    fetchCategories();  // Llamar a la API para obtener las categorías al cargar el componente
-  }, []); // Solo se ejecuta una vez al cargar el componente
+    fetchCategories();  
+  }, []); 
 
-  // Función para agregar una categoría
   const handleAddCategory = async () => {
-    if (!newCategory.trim()) return; // Si el nombre está vacío, no hacemos nada
+    if (!newCategory.trim()) return; 
 
-    const data = await addCategory(newCategory);  // Llamamos a la función de agregar categoría
+    const data = await addCategory(newCategory);  
     if (data.error) {
       setError("Error al agregar la categoría");
     } else {
-      // Actualizamos las categorías directamente agregando la nueva categoría
-      const newCategoryData = { name: newCategory, _id: data._id };  // Usamos el _id generado por el backend
-      setCategories((prevCategories) => [...prevCategories, newCategoryData]);  // Añadimos la nueva categoría a la lista
-      setNewCategory('');  // Limpiamos el input
+      const newCategoryData = { name: newCategory, _id: data._id };  
+      setCategories((prevCategories) => [...prevCategories, newCategoryData]);  
+      setNewCategory('');  
     }
   };
 
@@ -49,7 +46,7 @@ export const CategoryPage = () => {
             type="text"
             placeholder="Escribe el nombre de la categoría"
             value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}  // Actualizamos el nombre de la nueva categoría
+            onChange={(e) => setNewCategory(e.target.value)}  
             className="category-input"
           />
           <button onClick={handleAddCategory} className="category-button">Agregar Categoría</button>
