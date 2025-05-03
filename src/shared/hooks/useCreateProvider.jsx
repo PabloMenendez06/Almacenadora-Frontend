@@ -9,33 +9,25 @@ export const useCreateProvider = () => {
 
   const createProvider = async (name, email, number) => {
     setIsLoading(true);
-
     try {
       const response = await createProviderRequest({ name, email, number });
-
       setIsLoading(false);
-
       if (response.error) {
-
-        if (response.error?.response?.status === 400) {
-          toast.error("El proveedor ya existe.");
+        if (response.response?.status === 409) {
+          toast.error("Ya existe un proveedor con ese correo electrónico");
         } else {
-          toast.error(response.error?.response?.data || 'Ocurrio un error al registrar el proveedor, intenta de nuevo');
+          toast.error("Error al registrar proveedor");
         }
         return;
       }
-
-      const { providerDetails } = response(name,email,number);
-
-      localStorage.setItem('provider', JSON.stringify(providerDetails));
-
-      toast.success('Proveedor registrado exitosamente');
-      navigate('/provider');
-
+      const { providerDetails } = response;
+      localStorage.setItem("provider", JSON.stringify(providerDetails));
+      toast.success("Proveedor registrado exitosamente");
+      navigate("/provider");
     } catch (error) {
       setIsLoading(false);
-      console.error("Error al registrar proveedor:", error); 
-      toast.error("Error al registrar proveedor. Intenta de nuevo.");
+      console.error("Error al registrar proveedor:", error?.response || error);
+      toast.error(error?.response?.data?.message || "Error al registrar proveedor.");
     }
   };
 

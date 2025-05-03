@@ -2,24 +2,24 @@ import axios from "axios";
 import { logout } from "../shared/hooks";
 
 const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:3333/storagePenguin/v1/',
+    baseURL: 'http://localhost:3333/storagePenguin/v1/',
     timeout: 5000
 })
 
 apiClient.interceptors.request.use(
-    (config) => {
-        const useUserDetails = localStorage.getItem('user')
+  (config) => {
+      const useUserDetails = localStorage.getItem('user')
 
-        if(useUserDetails){
-            const token = JSON.parse(useUserDetails).token
-            config.headers.Authorization = `Bearer ${token}`
-        }
+      if(useUserDetails){
+          const token = JSON.parse(useUserDetails).token
+          config.headers.Authorization = `Bearer ${token}`
+      }
 
-        return config;
-    },
-    (e) => {
-        return Promise.reject(e)
-    }
+      return config;
+  },
+  (e) => {
+      return Promise.reject(e)
+  }
 )
 
 export const login = async(data) => {
@@ -44,13 +44,15 @@ export const register = async(data) => {
     }
 }
 
-export const createProvider = async (name,email,number) => {
+export const createProvider = async data => {
+  const token = JSON.parse(localStorage.getItem('user'))?.token; 
+  console.log("Token:",token);
     try {
-        const response = await apiClient.post('/provider', {name:name,email:email,number:number},{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+        const response = await apiClient.post('/provider', data,{
+          headers: {
+              'x-token': token, 
+          },
+      });
         return response.data;
     } catch (error) {
       return {
@@ -70,23 +72,51 @@ export const createProvider = async (name,email,number) => {
     }
   };
   
-  export const updateProvider = async(id, data) => {
-    return await apiClient.put(`/provider/${id}`, data,{
+  export const updateProvider = async (id, data) => {
+    const token = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("Token:", token);
+    try {
+      const response = await apiClient.put(`/provider/${id}`, data, {
+        headers: {
+          "x-token": token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return {
+        error: true,
+        response: error.response,
+      };
+    }
+  };
+  
+  
+  // Eliminar proveedor
+  export const deleteProvider = async (id) => {
+    const token = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("Token:", token);
+    try {
+      const response = await apiClient.delete(`/provider/${id}`, {
+        headers: {
+          'x-token': token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return {
+        error: true,
+        response: error.response,
+      };
+    }
+  };
+
+  export const deleteProduct = async(id) => {
+    return await apiClient.delete(`/products/${id}`,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
   };
-
-  export const deleteProvider = async(id) => {
-    return await apiClient.delete(`/provider/${id}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  };
-
-
 
 const checkResponseStatus = (e) => {
     const responseStatus = e?.response.status

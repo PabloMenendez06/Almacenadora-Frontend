@@ -52,11 +52,11 @@ export const ProviderPage = () => {
                 exit={{ x: "100%" }}
                 transition={{ type: "tween", duration: 0.3 }}
               >
-                <CreateProvider
-                  onClose={handleCloseForm}
-                  providerToEdit={providerToEdit}
-                  setProviderToEdit={setProviderToEdit}
-                />
+              <CreateProvider
+                onClose={handleCloseForm}
+                providerToEdit={providerToEdit}
+                setProviderToEdit={setProviderToEdit}
+              />
               </motion.div>
             )}
           </AnimatePresence>
