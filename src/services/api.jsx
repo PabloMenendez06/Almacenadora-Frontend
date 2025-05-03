@@ -8,19 +8,19 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-      const useUserDetails = localStorage.getItem('user')
+    const useUserDetails = localStorage.getItem('user');
 
-      if(useUserDetails){
-          const token = JSON.parse(useUserDetails).token
-          config.headers.Authorization = `Bearer ${token}`
-      }
+    if (useUserDetails) {
+      const token = JSON.parse(useUserDetails).token;
+      config.headers['x-token'] = token; 
+    }
 
-      return config;
+    return config;
   },
   (e) => {
-      return Promise.reject(e)
+    return Promise.reject(e);
   }
-)
+);
 
 export const login = async(data) => {
     try {
@@ -43,6 +43,28 @@ export const register = async(data) => {
         }
     }
 }
+export const getCategories = async () => {
+  try {
+      const response = await apiClient.get('/category');
+      return response.data;
+  } catch (e) {
+      checkResponseStatus(e);
+      return { error: true, e };
+  }
+};
+
+export const addCategory = async (categoryName) => {
+  const token = JSON.parse(localStorage.getItem('user'))?.token; 
+  console.log(token);
+  try {
+      const response = await apiClient.post('/category', { name: categoryName });
+      return response.data;
+  } catch (e) {
+      checkResponseStatus(e);  
+      return { error: true, e };
+  }
+};
+
 
 export const createProvider = async data => {
   const token = JSON.parse(localStorage.getItem('user'))?.token; 
@@ -91,7 +113,6 @@ export const createProvider = async data => {
   };
   
   
-  // Eliminar proveedor
   export const deleteProvider = async (id) => {
     const token = JSON.parse(localStorage.getItem("user"))?.token;
     console.log("Token:", token);
@@ -117,11 +138,49 @@ export const createProvider = async data => {
         },
       });
   };
+  export const createClient = async (clientData) => {
+    try {
+      const response = await apiClient.post('/client', clientData);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const listClients = async () => {
+    try {
+      const response = await apiClient.get('/client');
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const updateClient = async (id, clientData) => {
+    try {
+      const response = await apiClient.put(`/client/${id}`, clientData);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+  
+  export const deleteClient = async (id) => {
+    try {
+      const response = await apiClient.delete(`/client/${id}`);
+      return response.data;
+    } catch (e) {
+      return { error: true, e };
+    }
+  };
+
+
 
 const checkResponseStatus = (e) => {
-    const responseStatus = e?.response.status
+  const responseStatus = e?.response.status
 
-    if(responseStatus){
-        (responseStatus === 401 || responseStatus === 403) && logout()
-    }
+  if(responseStatus){
+      (responseStatus === 401 || responseStatus === 403) && logout()
+  }
+
 }
