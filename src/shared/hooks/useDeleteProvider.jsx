@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { deleteProvider as deleteProviderRequest } from "../../services";
 import toast from "react-hot-toast";
+import { deleteProvider as deleteProviderRequest } from "../../services"; 
 
 export const useDeleteProvider = () => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -9,19 +9,20 @@ export const useDeleteProvider = () => {
     setIsDeleting(true);
     try {
       const response = await deleteProviderRequest(id);
-      setIsDeleting(false);
 
-      if (response.error) {
-        toast.error(response.error?.response?.data || "Error al eliminar proveedor.");
+      if (response?.error) {
+        toast.error(response.response?.data?.message || "Error al eliminar proveedor.");
         return null;
       }
 
       toast.success("Proveedor eliminado correctamente.");
-      return response.data;
+      return response;
     } catch (error) {
-      setIsDeleting(false);
+      console.error("Error al eliminar proveedor:", error);
       toast.error("Error al eliminar proveedor. Intenta de nuevo.");
       return null;
+    } finally {
+      setIsDeleting(false);
     }
   };
 

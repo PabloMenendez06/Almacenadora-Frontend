@@ -1,35 +1,40 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { updateProvider as updateProviderRequest } from "../../services";
 import toast from "react-hot-toast";
-import { updateProvider as updateProviderRequest } from "../../services"; 
 
 export const useUpdateProvider = () => {
   const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
 
   const updateProvider = async (id, updatedData) => {
     setIsUpdating(true);
     try {
       const response = await updateProviderRequest(id, updatedData);
-
-      if (response.data?.success) {
-        toast.success("Proveedor actualizado exitosamente");
-        return response.data.provider;
-      } else {
-        toast.error("No se pudo actualizar el proveedor");
-      }
-    } catch (error) {
-      console.error("Error al actualizar proveedor:", error);
-      if (error.response?.status === 404) {
-        toast.error("Proveedor no encontrado");
-      } else {
-        toast.error("Error al actualizar proveedor. Intenta de nuevo.");
-      }
-    } finally {
       setIsUpdating(false);
+
+      if (response.error) {
+        if (response.response?.status === 404) {
+          toast.error("Proveedor no encontrado");
+        } else {
+          toast.error("Error al actualizar proveedor");
+        }
+        return;
+      }
+
+      const { provider } = response;
+      localStorage.setItem("provider", JSON.stringify(provider));
+      toast.success("Proveedor actualizado exitosamente");
+      navigate("/provider");
+    } catch (error) {
+      setIsUpdating(false);
+      console.error("Error al actualizar proveedor:", error?.response || error);
+      toast.error(error?.response?.data?.message || "Error al actualizar proveedor.");
     }
   };
 
   return {
     updateProvider,
-    isUpdating,
+    isUpdating
   };
 };

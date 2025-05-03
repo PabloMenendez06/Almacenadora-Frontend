@@ -10,6 +10,7 @@ import { ProviderPage } from './pages/provider';
 const routes = [
     {path: '/category', element: <CategoryPage />},
     {path: '/provider', element: <ProviderPage />},
+    {path: '/product', element: <ProductPage/>},
     {path: '/history', element: <HistoryPage />},
     {path: '/product', element: <ProductPage />},
     {path: '/client', element: <ClientPage />},

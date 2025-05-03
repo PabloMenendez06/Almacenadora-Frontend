@@ -43,21 +43,19 @@ export const CreateProvider = ({ providerToEdit, onClose }) => {
 
   const onSubmit = async (data) => {
     try {
+      console.log("Datos a enviar:", data);
       if (providerToEdit) {
         await updateProvider(providerToEdit._id, data); 
       } else {
         await registerProvider(data.name, data.email, data.number);
-        toast.success("Proveedor registrado con éxito");
       }
-      onClose(); 
+      onClose();
     } catch (error) {
-      if (error.response?.status === 409) {
-        toast.error("Ya existe un proveedor con ese correo electrónico");
-      } else {
-        toast.error("Error al procesar el proveedor. Intenta de nuevo.");
-      }
+      console.error("Error al enviar proveedor:", error);
+      toast.error("Error al procesar el proveedor.");
     }
   };
+  
 
   return (
     <div className="register-container">

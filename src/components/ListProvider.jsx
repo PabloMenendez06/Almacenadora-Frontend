@@ -41,7 +41,6 @@ export const ListProviders = ({ setProviderToEdit, setShowForm }) => {
       fetchProviders();
     }
   };
-
   const handleEdit = () => {
     if (selected.length === 0) return toast.error("Selecciona un proveedor para editar");
 
