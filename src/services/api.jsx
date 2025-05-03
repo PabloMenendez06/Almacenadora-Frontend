@@ -174,6 +174,31 @@ export const createProvider = async data => {
     }
   };
 
+  export const updateUser = async (data) => {
+    try {
+      const userId = JSON.parse(localStorage.getItem("user"))?._id;
+      return await apiClient.put(`/editar/${userId}`, data);
+    } catch (e) {
+      return {
+        error: true,
+        e
+      };
+    }
+  };
+  
+  export const changePassword = async (data) => {
+    try {
+      const userId = JSON.parse(localStorage.getItem("user"))?._id;
+      return await apiClient.patch(`/editar/${userId}`, data);
+    } catch (e) {
+      return {
+        error: true,
+        e
+      };
+    }
+  };
+  
+
 
 
 const checkResponseStatus = (e) => {

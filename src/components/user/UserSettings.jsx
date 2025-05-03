@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Input } from '../Input';
-import { userSchema } from '../../shared/validators'; 
+import {
+  validateUsername,
+  validateUsernameMessage,
+  validateName,
+  validateNameMessage
+} from '../../shared/validators';
 
 const inputs = [
   {
@@ -9,23 +14,23 @@ const inputs = [
     type: 'text'
   },
   {
-    field: 'avatarUrl',
-    label: 'Avatar Url',
+    field: 'name',
+    label: 'Name',
     type: 'text'
-  },
+  }
 ];
 
-export const ChannelSettings = ({ settings, saveSettings }) => {
+export const UserSettings = ({ settings, saveSettings }) => {
   const [formState, setFormState] = useState({
     username: {
       isValid: true,
       showError: false,
       value: settings.username
     },
-    avatarUrl: {
+    name: {
       isValid: true,
       showError: false,
-      value: settings.avatarUrl
+      value: settings.name
     }
   });
 
@@ -39,54 +44,55 @@ export const ChannelSettings = ({ settings, saveSettings }) => {
     }));
   };
 
-  const handleInputValidationOnBlur = async (value, field) => {
-    try {
-      await userSchema.validateAt(field, { [field]: value });
-      setFormState((prevState) => ({
-        ...prevState,
-        [field]: {
-          ...prevState[field],
-          isValid: true,
-          showError: false
-        }
-      }));
-    } catch (error) {
-      setFormState((prevState) => ({
-        ...prevState,
-        [field]: {
-          ...prevState[field],
-          isValid: false,
-          showError: true
-        }
-      }));
+  const handleInputValidationOnBlur = (value, field) => {
+    let isValid = true;
+
+    if (field === 'username') {
+      isValid = validateUsername(value);
+    } else if (field === 'name') {
+      isValid = validateName(value);
     }
+
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        isValid,
+        showError: !isValid
+      }
+    }));
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    const values = {
-      username: formState.username.value,
-      avatarUrl: formState.avatarUrl.value,
-    };
+    const isUsernameValid = validateUsername(formState.username.value);
+    const isNameValid = validateName(formState.name.value);
 
-    try {
-      await userSchema.validate(values, { abortEarly: false });
-      saveSettings(values);
-    } catch (error) {
-      const newFormState = { ...formState };
-
-      error.inner.forEach((err) => {
-        const field = err.path;
-        newFormState[field].isValid = false;
-        newFormState[field].showError = true;
-      });
-
-      setFormState(newFormState);
+    if (!isUsernameValid || !isNameValid) {
+      setFormState((prevState) => ({
+        ...prevState,
+        username: {
+          ...prevState.username,
+          isValid: isUsernameValid,
+          showError: !isUsernameValid
+        },
+        name: {
+          ...prevState.name,
+          isValid: isNameValid,
+          showError: !isNameValid
+        }
+      }));
+      return;
     }
+
+    saveSettings({
+      username: formState.username.value,
+      name: formState.name.value
+    });
   };
 
-  const isSubmitButtonDisabled = !formState.username.isValid || !formState.avatarUrl.isValid;
+  const isSubmitButtonDisabled = !formState.username.isValid || !formState.name.isValid;
 
   return (
     <form className="settings-form" onSubmit={handleFormSubmit}>
@@ -99,7 +105,13 @@ export const ChannelSettings = ({ settings, saveSettings }) => {
           onChangeHandler={handleInputValueChange}
           onBlurHandler={handleInputValidationOnBlur}
           showErrorMessage={formState[input.field].showError}
-          validationMessage={!formState[input.field].isValid ? 'Campo inválido' : ''}
+          validationMessage={
+            !formState[input.field].isValid
+              ? input.field === 'username'
+                ? validateUsernameMessage
+                : validateNameMessage
+              : ''
+          }
           type={input.type}
           textarea={input.textarea}
         />

@@ -1,9 +1,12 @@
+import { useUserSettings} from "../../shared/hooks";
 import { UserSettings } from "../user/UserSettings.jsx";
 import { LoadingSpinner } from "../loadingSpinner.jsx";
+import { PasswordSettings } from "./PasswordSettings";
+
 
 export const Settings = () => {
     
-    const { userSettings, isFetching, saveSettings } = useChannelSettings()
+    const { userSettings, isFetching, saveSettings } = useUserSettings()
 
     if(isFetching){
         return <LoadingSpinner/>
@@ -13,6 +16,7 @@ export const Settings = () => {
         <div className="settings-container">
             <span>Settings</span>
             <UserSettings settings={userSettings} saveSettings={saveSettings}/>
+            <PasswordSettings />
         </div>
     )
 }
