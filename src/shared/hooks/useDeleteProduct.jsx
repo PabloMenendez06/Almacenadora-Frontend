@@ -1,28 +1,33 @@
 import { useState } from "react";
-import { deleteProductRequest } from "../../services";
 import toast from "react-hot-toast";
+import { deleteProduct as deleteProductRequest } from "../../services"; 
 
 export const useDeleteProduct = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteProduct = async (id) => {
-    setIsLoading(true);
+    setIsDeleting(true);
     try {
       const response = await deleteProductRequest(id);
-      setIsLoading(false);
 
-      if (response.error) {
-        toast.error(response.error?.response?.data?.message || "Error al eliminar el producto.");
-        return;
+      if (response?.error) {
+        toast.error(response.response?.data?.message || "Error al eliminar producto.");
+        return null;
       }
 
-      toast.success("Producto eliminado correctamente");
+      toast.success("Producto eliminado correctamente.");
+      return response;
     } catch (error) {
-      setIsLoading(false);
       console.error("Error al eliminar producto:", error);
-      toast.error("Ocurrió un error al eliminar el producto.");
+      toast.error("Error al eliminar producto. Intenta de nuevo.");
+      return null;
+    } finally {
+      setIsDeleting(false);
     }
   };
 
-  return { deleteProduct, isLoading };
+  return {
+    deleteProduct,
+    isDeleting,
+  };
 };

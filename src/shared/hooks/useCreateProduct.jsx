@@ -1,35 +1,45 @@
-// src/shared/hooks/useCreateCategory.js
 import { useState } from "react";
-import toast from "react-hot-toast";
-import { addCategory } from "../../services/api";
+import { createProduct as createProductRequest } from "../../services";
 
-export const useCreateCategory = () => {
+export const useCreateProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const createCategory = async (name) => {
+  const createProduct = async ({
+    name,
+    description,
+    provider,
+    price,
+    stock,
+    category,
+    entryDate,
+    expirationDate,
+  }) => {
     setIsLoading(true);
     try {
-      const response = await addCategory(name); // Envía solo el nombre
+      const response = await createProductRequest({
+        name,
+        description,
+        provider,
+        price,
+        stock,
+        category,
+        entryDate,
+        expirationDate,
+      });
 
       setIsLoading(false);
-
-      if (response.error) {
-        toast.error("Error al agregar la categoría.");
-        return null;
-      }
-
-      toast.success("Categoría creada exitosamente");
-      return response; // Devuelve los datos para agregarlos a la lista
+      return response;
     } catch (error) {
-      console.error("Error al crear la categoría:", error);
-      toast.error("Error al crear la categoría.");
       setIsLoading(false);
-      return null;
+      const status = error.response?.status;
+      const message = error.response?.data?.message || "Error desconocido";
+      console.error("Error al registrar producto:", error.response || error);
+      throw { status, message };
     }
   };
 
   return {
-    createCategory,
+    createProduct,
     isLoading,
   };
 };

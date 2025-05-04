@@ -1,41 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login as loginRequest } from "../../services";
 import toast from "react-hot-toast";
-import { useUserDetails } from "../hooks/useUserDetails"; 
+import { login as loginRequest } from "../../services"; 
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  
-  const { setUserDetails } = useUserDetails(); 
 
   const login = async (email, password) => {
     setIsLoading(true);
 
     try {
       const response = await loginRequest({ email, password });
+
       const { userDetails } = response.data;
+      const { token } = userDetails;
 
-      console.log("Detalles recibidos del login:", userDetails);
-      console.log("Token recibido:", userDetails?.token);
+      if (userDetails && token) {
+        const userData = { ...userDetails, token };
 
-      localStorage.setItem("user", JSON.stringify(userDetails));
+        localStorage.setItem("user", JSON.stringify(userData));
 
-      if (setUserDetails) {
-        setUserDetails(userDetails);
+        toast.success("Sesión iniciada correctamente");
+        navigate("/");  
+      } else {
+        throw new Error("Error al obtener datos del usuario.");
       }
-
-      toast.success("Sesión iniciada correctamente");
-      navigate("/");
     } catch (error) {
-      //console.error("Login error:", error);
       toast.error(
         error?.response?.data?.msg || "Ocurrió un error al iniciar sesión, intenta de nuevo"
       );
     } finally {
-      setIsLoading(false);
+      setIsLoading(false);  
     }
   };
 

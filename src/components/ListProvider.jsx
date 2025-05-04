@@ -1,30 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
-import { listProviders } from "../services";
+import { useState } from "react";
+import { useListProviders } from "../shared/hooks";
 import { useDeleteProvider } from "../shared/hooks";
 import { LoadingSpinner } from "./loadingSpinner";
 import toast from "react-hot-toast";
 
 export const ListProviders = ({ setProviderToEdit, setShowForm }) => {
-  const [providers, setProviders] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { providers, isLoading, refetch } = useListProviders();
   const { deleteProvider, isDeleting } = useDeleteProvider();
-
-  const fetchProviders = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { success, providers } = await listProviders();
-      success ? setProviders(providers) : toast.error("No se pudieron cargar los proveedores");
-    } catch {
-      toast.error("Error al cargar proveedores");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchProviders();
-  }, [fetchProviders]);
 
   const toggleSelect = (id) =>
     setSelected((prev) =>
@@ -32,26 +15,37 @@ export const ListProviders = ({ setProviderToEdit, setShowForm }) => {
     );
 
   const handleDelete = async () => {
-    if (selected.length === 0) return toast.error("Selecciona al menos un proveedor para eliminar");
+    if (selected.length === 0) {
+      toast.error("Selecciona al menos un proveedor para eliminar");
+      return;
+    }
+
     if (!confirm("¿Estás seguro de eliminar el proveedor?")) return;
 
     const success = await deleteProvider(selected[0]);
     if (success) {
       setSelected([]);
-      fetchProviders();
+      refetch(); 
     }
   };
+
   const handleEdit = () => {
-    if (selected.length === 0) return toast.error("Selecciona un proveedor para editar");
+    if (selected.length === 0) {
+      toast.error("Selecciona un proveedor para editar");
+      return;
+    }
 
     const providerToEdit = providers.find((p) => p._id === selected[0]);
-    if (!providerToEdit) return toast.error("Proveedor no encontrado");
+    if (!providerToEdit) {
+      toast.error("Proveedor no encontrado");
+      return;
+    }
 
     setProviderToEdit(providerToEdit);
     setShowForm(true);
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="list-provider-container">
@@ -59,7 +53,7 @@ export const ListProviders = ({ setProviderToEdit, setShowForm }) => {
 
       {selected.length > 0 && (
         <div className="action-buttons" style={{ marginBottom: "1rem" }}>
-          <button className = "edit-button" onClick={handleEdit}>Editar</button>
+          <button className="edit-button" onClick={handleEdit}>Editar</button>
           <button className="delete-button" onClick={handleDelete} disabled={isDeleting}>
             {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>

@@ -43,7 +43,15 @@ export const register = async(data) => {
         }
     }
 }
-
+export const getCategories = async () => {
+  try {
+      const response = await apiClient.get('/category');
+      return response.data;
+  } catch (e) {
+      checkResponseStatus(e);
+      return { error: true, e };
+  }
+};
 export const createProvider = async data => {
   const token = JSON.parse(localStorage.getItem('user'))?.token; 
   console.log("Token:",token);
@@ -62,12 +70,40 @@ export const createProvider = async data => {
     }
   };
 
+  export const createProduct = async data => {
+    const token = JSON.parse(localStorage.getItem('user'))?.token; 
+    console.log("Token:",token);
+      try {
+          const response = await apiClient.post('/product', data,{
+            headers: {
+                'x-token': token, 
+            },
+        });
+          return response.data;
+      } catch (error) {
+        return {
+          error: true,
+          response: error.response, 
+        };
+      }
+    };
+
   export const listProviders = async () => {
     try {
       const response = await apiClient.get('/provider');  
       return response.data;
     } catch (error) {
       console.error('Error al obtener los proveedores:', error);
+      throw error; 
+    }
+  };
+  
+  export const listProducts = async () => {
+    try {
+      const response = await apiClient.get('/product');  
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los productos:', error);
       throw error; 
     }
   };
@@ -90,8 +126,24 @@ export const createProvider = async data => {
     }
   };
   
+  export const updateProduct = async (id, data) => {
+    const token = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("Token:", token);
+    try {
+      const response = await apiClient.put(`/product/${id}`, data, {
+        headers: {
+          "x-token": token,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return {
+        error: true,
+        response: error.response,
+      };
+    }
+  };
   
-  // Eliminar proveedor
   export const deleteProvider = async (id) => {
     const token = JSON.parse(localStorage.getItem("user"))?.token;
     console.log("Token:", token);
@@ -110,12 +162,22 @@ export const createProvider = async data => {
     }
   };
 
-  export const deleteProduct = async(id) => {
-    return await apiClient.delete(`/products/${id}`,{
+  export const deleteProduct = async (id) => {
+    const token = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("Token:", token);
+    try {
+      const response = await apiClient.delete(`/product/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'x-token': token,
         },
       });
+      return response.data;
+    } catch (error) {
+      return {
+        error: true,
+        response: error.response,
+      };
+    }
   };
 
 const checkResponseStatus = (e) => {

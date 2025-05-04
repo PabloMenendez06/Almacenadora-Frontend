@@ -1,17 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
-import { listProviders } from "../../services";
+import { getCategories } from "../../services";
 import toast from "react-hot-toast";
 
-export const useListProviders = () => {
-  const [providers, setProviders] = useState([]);
+export const useListCategories = () => {
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchProviders = useCallback(async () => {
+  const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { success, providers } = await listProviders();
+      const { success, categories } = await getCategories();
       if (success) {
-        setProviders(providers);
+        setCategories(categories);
       } else {
         toast.error("No se pudieron cargar los proveedores");
       }
@@ -24,8 +24,8 @@ export const useListProviders = () => {
   }, []);
 
   useEffect(() => {
-    fetchProviders();
-  }, [fetchProviders]);
+    fetchCategories();
+  }, [fetchCategories]);
 
-  return { providers, isLoading, refetch: fetchProviders };
+  return { categories, isLoading, refetch: fetchCategories };
 };
