@@ -126,22 +126,23 @@ export const createProvider = async data => {
     }
   };
   
-  export const updateProduct = async (id, data) => {
+  export const updateProduct = async (id, productData) => {
     const token = JSON.parse(localStorage.getItem("user"))?.token;
     console.log("Token:", token);
     try {
-      const response = await apiClient.put(`/product/${id}`, data, {
+      const response = await apiClient.put(`/product/${id}`, productData, {
         headers: {
           "x-token": token,
         },
       });
       return response.data;
     } catch (error) {
+      console.error("Error al actualizar el producto:", error.response.data);
       return {
         error: true,
         response: error.response,
       };
-    }
+    }    
   };
   
   export const deleteProvider = async (id) => {

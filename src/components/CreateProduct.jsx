@@ -2,24 +2,29 @@ import { useEffect } from "react";
 import { Input } from "./Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateProduct, useUpdateProduct, useListProviders, useListCategories } from "../shared/hooks";
-import { productSchema as schema } from "../shared/validators";
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useListProviders,
+  useListCategories,
+} from "../shared/hooks";
+import { productSchema } from "../shared/validators";
 import toast from "react-hot-toast";
 
 export const CreateProduct = ({ productToEdit, onClose }) => {
   const { createProduct, isLoading } = useCreateProduct();
   const { updateProduct, isUpdating } = useUpdateProduct();
   const { providers } = useListProviders();
-  const { categories } = useListCategories(); 
+  const { categories } = useListCategories();
 
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
-    formState: { errors }
+    formState: { errors, isValid },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(productSchema),
+    mode: "onBlur",
     defaultValues: {
       name: "",
       price: "",
@@ -28,8 +33,8 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
       provider: "",
       category: "",
       entryDate: new Date().toISOString().split("T")[0],
-      expirationDate: ""
-    }
+      expirationDate: "",
+    },
   });
 
   useEffect(() => {
@@ -41,8 +46,19 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
         description: productToEdit.description,
         provider: productToEdit.provider?.name || "",
         category: productToEdit.category?.name || "",
+        entryDate: formatDate(productToEdit.entryDate),
         expirationDate: formatDate(productToEdit.expirationDate),
-        entryDate: formatDate(productToEdit.entryDate)
+      });
+    } else {
+      reset({
+        name: "",
+        price: "",
+        stock: "",
+        description: "",
+        provider: "",
+        category: "",
+        entryDate: new Date().toISOString().split("T")[0],
+        expirationDate: "",
       });
     }
   }, [productToEdit, reset]);
@@ -50,15 +66,15 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
   const onSubmit = async (data) => {
     const selectedProvider = providers.find(p => p.name === data.provider);
     const selectedCategory = categories.find(c => c.name === data.category);
-  
+
     const productData = {
       ...data,
       entryDate: formatDate(data.entryDate),
       expirationDate: formatDate(data.expirationDate),
-      provider: selectedProvider?.name || "",  
-      category: selectedCategory?.name || "",  
+      provider: selectedProvider?.name || "",
+      category: selectedCategory?.name || "",
     };
-  
+
     try {
       if (productToEdit) {
         await updateProduct(productToEdit._id, productData);
@@ -69,27 +85,45 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
       }
       onClose();
     } catch (error) {
-      const { status, message } = error;
+      console.error("Error al enviar producto:", error);
+      const { status, message } = error || {};
       if (status === 404 && message === "Categoría no encontrada") {
         toast.error("Categoría no encontrada");
       } else if (status === 404 && message === "Proveedor no encontrado") {
         toast.error("Proveedor no encontrado");
-      } else if (status === 400) {
-        toast.error("Todos los campos son obligatorios");
       } else {
         toast.error(message || "Error al registrar producto");
       }
     }
   };
-  
 
   return (
     <div className="register-container">
       <h1>{productToEdit ? "Editar Producto" : "Registrar Producto"}</h1>
       <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-        <Input field="name" label="Nombre" {...register("name")} />
-        <Input field="price" label="Precio" {...register("price")} type="number" />
-        <Input field="stock" label="Stock" {...register("stock")} type="number" />
+        <Input
+          field="name"
+          label="Nombre"
+          {...register("name")}
+          showErrorMessage={!!errors.name}
+          validationMessage={errors.name?.message}
+        />
+        <Input
+          field="price"
+          label="Precio"
+          type="number"
+          {...register("price")}
+          showErrorMessage={!!errors.price}
+          validationMessage={errors.price?.message}
+        />
+        <Input
+          field="stock"
+          label="Stock"
+          type="number"
+          {...register("stock")}
+          showErrorMessage={!!errors.stock}
+          validationMessage={errors.stock?.message}
+        />
 
         <div className="form-group">
           <label htmlFor="description">Descripción</label>
@@ -98,7 +132,9 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
             className={`input ${errors.description ? "input-error" : ""}`}
             {...register("description")}
           />
-          {errors.description && <p className="error-message">{errors.description.message}</p>}
+          {errors.description && (
+            <p className="error-message">{errors.description.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -109,13 +145,16 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
             {...register("provider")}
           >
             <option value="">Selecciona un proveedor</option>
-            {providers.map((provider) => (
-                <option key={provider._id} value={provider.name}> {/* ← CAMBIO */}
-                    {provider.name}
-                </option>
+            {providers.map((p) => p.name).map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
             ))}
           </select>
-          {errors.provider && <p className="error-message">{errors.provider.message}</p>}
+
+          {errors.provider && (
+            <p className="error-message">{errors.provider.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -126,13 +165,15 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
             {...register("category")}
           >
             <option value="">Selecciona una categoría</option>
-            {categories.map((category) => (
-                <option key={category._id} value={category.name}> {/* ← CAMBIO */}
-                    {category.name}
-                </option>
+            {categories.map((c) => c.name).map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
             ))}
           </select>
-          {errors.category && <p className="error-message">{errors.category.message}</p>}
+          {errors.category && (
+            <p className="error-message">{errors.category.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -140,9 +181,12 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
           <input
             type="date"
             id="expirationDate"
-            className="input"
+            className={`input ${errors.expirationDate ? "input-error" : ""}`}
             {...register("expirationDate")}
           />
+          {errors.expirationDate && (
+            <p className="error-message">{errors.expirationDate.message}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -157,10 +201,12 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
         </div>
 
         <div className="button-group">
-          <button type="submit" disabled={isLoading || isUpdating}>
+          <button type="submit" disabled={isLoading || isUpdating || !isValid}>
             {productToEdit ? "Guardar Cambios" : "Crear"}
           </button>
-          <button type="button" onClick={onClose}>Cancelar</button>
+          <button type="button" onClick={onClose}>
+            Cancelar
+          </button>
         </div>
       </form>
     </div>
@@ -168,6 +214,5 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
 };
 
 function formatDate(date) {
-    return new Date(date).toISOString().split("T")[0];
-  }
-  
+  return new Date(date).toISOString().split("T")[0];
+}
