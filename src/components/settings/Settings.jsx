@@ -2,7 +2,9 @@ import { useUserSettings} from "../../shared/hooks";
 import { UserSettings } from "../user/UserSettings.jsx";
 import { LoadingSpinner } from "../loadingSpinner.jsx";
 import { PasswordSettings } from "./PasswordSettings";
+import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"
 
+import '../../pages/dashboard/dashboardPage.css'
 
 export const Settings = () => {
     
@@ -17,7 +19,7 @@ export const Settings = () => {
             <span>Settings</span>
             <UserSettings settings={userSettings} saveSettings={saveSettings}/>
             <PasswordSettings />
-            <h1>holaaaaaa</h1>
+            <SidebarDemo />
         </div>
     )
 }
