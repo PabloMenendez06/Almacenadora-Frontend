@@ -1,19 +1,24 @@
 import { useState } from "react";
-import { filterProductsByCategoryRequest } from "../../services";
+import { filterProducts } from "../../services";
+import toast from "react-hot-toast";
 
 export const useFilterProductsByCategory = () => {
-  const [filtered, setFiltered] = useState([]);
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const filter = async (categoryName) => {
     setIsLoading(true);
-    const response = await filterProductsByCategoryRequest(categoryName);
-    setIsLoading(false);
-
-    if (!response.error) {
-      setFiltered(response.products || []);
+    try {
+      const { success, products } = await filterProducts(categoryName);
+      if (success) setProducts(products);
+      else toast.error(`No se encontraron productos para la categoría: ${categoryName}`);
+    } catch (error) {
+      toast.error("Error al filtrar productos por categoría");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { filter, filtered, isLoading };
+  return { products, isLoading, filter };
 };

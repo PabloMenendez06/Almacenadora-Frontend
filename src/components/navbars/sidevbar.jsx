@@ -13,11 +13,10 @@ import {
   IconApple
 } from "@tabler/icons-react";
 import { TiClipboard } from "react-icons/ti";
-import { motion } from "framer-motion";
 import { cn } from "../../lib/utils";
 
 export function SidebarDemo() {
-  const { isLogged, logout } = useUserDetails();
+  const { isLogged, logout, username } = useUserDetails();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true); 
 
@@ -66,7 +65,7 @@ export function SidebarDemo() {
             <div className="sidebar-footer">
               <SidebarLink
                 link={{
-                  label: "User",
+                  label: isLogged ? username : "User",
                   href: "/settings",
                   icon: (
                     <img
