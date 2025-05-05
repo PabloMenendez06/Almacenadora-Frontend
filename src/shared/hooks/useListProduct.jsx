@@ -1,22 +1,31 @@
-import { useEffect, useState } from "react";
-import { listProductsRequest } from "../../services";
+import { useState, useCallback, useEffect } from "react";
+import { listProducts } from "../../services";
+import toast from "react-hot-toast";
 
 export const useListProducts = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await listProductsRequest();
-      setIsLoading(false);
-
-      if (!response.error) {
-        setProducts(response.products || []);
+  const fetchProducts = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { success, products } = await listProducts();
+      if (success) {
+        setProducts(products);
+      } else {
+        toast.error("No se pudieron cargar los productos");
       }
-    };
-
-    fetchProducts();
+    } catch (error) {
+      toast.error("Error al cargar productos");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { products, isLoading };
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, isLoading, refetch: fetchProducts };
 };

@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { Input } from './Input';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCreateProvider, useUpdateProvider } from '../shared/hooks'; // Asegúrate de importar tu hook
+import { useCreateProvider, useUpdateProvider } from '../shared/hooks'; 
 import { providerSchema } from '../shared/validators';
 import toast from "react-hot-toast";
 
 export const CreateProvider = ({ providerToEdit, onClose }) => {
   const { createProvider: registerProvider, isLoading } = useCreateProvider();
-  const { updateProvider, isUpdating } = useUpdateProvider(); // <== aquí está
+  const { updateProvider, isUpdating } = useUpdateProvider(); 
 
   const {
     register,

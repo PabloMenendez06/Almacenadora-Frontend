@@ -20,18 +20,18 @@ export const ProviderPage = () => {
   }, []);
 
   return (
-    <div className="provider-container">
+    <div className="pro-container">
       <SidebarDemo />
 
-      <div className="provider-content">
+      <div className="pro-content">
         <div className="header">
           <h1>Proveedores</h1>
-          <button className="provider-button" onClick={handleOpenForm}>
+          <button className="pro-button" onClick={handleOpenForm}>
             Registrar nuevo proveedor
           </button>
         </div>
 
-        <div className="provider-body">
+        <div className="pro-body">
           <motion.div
             className="list-wrapper"
             animate={{ width: showForm ? "70%" : "100%" }}
@@ -46,17 +46,17 @@ export const ProviderPage = () => {
           <AnimatePresence>
             {showForm && (
               <motion.div
-                className="provider-form-panel"
+                className="form-panel"
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "tween", duration: 0.3 }}
               >
-              <CreateProvider
-                onClose={handleCloseForm}
-                providerToEdit={providerToEdit}
-                setProviderToEdit={setProviderToEdit}
-              />
+                <CreateProvider
+                  onClose={handleCloseForm}
+                  providerToEdit={providerToEdit}
+                  setProviderToEdit={setProviderToEdit}
+                />
               </motion.div>
             )}
           </AnimatePresence>

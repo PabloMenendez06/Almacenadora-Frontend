@@ -1,38 +1,31 @@
-import { useState, useEffect } from "react";
-import { listProviders as listProvidersRequest } from "../../services"; // Esta es la función para hacer la solicitud al backend
+import { useState, useCallback, useEffect } from "react";
+import { listProviders } from "../../services";
 import toast from "react-hot-toast";
 
 export const useListProviders = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [providers, setProviders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProviders = async () => {
-      setIsLoading(true);
-
-      try {
-        const response = await listProvidersRequest(); 
-
-        setIsLoading(false);
-
-        if (response.error) {
-          toast.error(response.error?.response?.data || 'Ocurrio un error al obtener la lista de proveedores');
-          return;
-        }
-
-        setProviders(response.data.providers);
-
-      } catch (error) {
-        setIsLoading(false);
-        toast.error("Error al obtener la lista de proveedores. Intenta de nuevo.");
+  const fetchProviders = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { success, providers } = await listProviders();
+      if (success) {
+        setProviders(providers);
+      } else {
+        toast.error("No se pudieron cargar los proveedores");
       }
-    };
-
-    fetchProviders();
+    } catch (error) {
+      toast.error("Error al cargar proveedores");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return {
-    isLoading,
-    providers,
-  };
+  useEffect(() => {
+    fetchProviders();
+  }, [fetchProviders]);
+
+  return { providers, isLoading, refetch: fetchProviders };
 };

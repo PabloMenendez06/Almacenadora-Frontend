@@ -17,15 +17,15 @@ export const Input = ({
         {textArea ? (
           <textarea
             {...registerProps}
-            value={value} 
-            onChange={onChange} 
+            value={value}
+            onChange={onChange}
             rows={5}
             style={{ maxWidth: '400px' }}
           />
         ) : (
           <input
             {...registerProps}
-            value={value} 
+            value={value}
             onChange={onChange}
           />
         )}
@@ -45,8 +45,8 @@ export const InputWithField = ({
   showErrorMessage,
   validationMessage,
   textArea,
-  value, 
-  onChange, 
+  value,
+  onChange,
   onBlur,
   ...registerProps
 }) => {
@@ -59,7 +59,7 @@ export const InputWithField = ({
         {textArea ? (
           <textarea
             {...registerProps}
-            value={value} 
+            value={value}
             onChange={(e) => onChange(e.target.value, field)}
             onBlur={(e) => onBlur && onBlur(e.target.value, field)}
             rows={5}
@@ -68,7 +68,7 @@ export const InputWithField = ({
         ) : (
           <input
             {...registerProps}
-            value={value} 
+            value={value}
             onChange={(e) => onChange(e.target.value, field)}
             onBlur={(e) => onBlur && onBlur(e.target.value, field)}
           />

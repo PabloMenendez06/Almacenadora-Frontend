@@ -8,6 +8,7 @@ import { ProviderPage } from './pages/provider';
 import { Settings } from './components/settings/Settings';
 
 
+
 const routes = [
     {path: '/category', element: <CategoryPage />},
     {path: '/provider', element: <ProviderPage />},

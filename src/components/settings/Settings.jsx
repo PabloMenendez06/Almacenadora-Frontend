@@ -1,25 +1,26 @@
-import { useUserSettings} from "../../shared/hooks";
+import { useUserSettings } from "../../shared/hooks";
 import { UserSettings } from "../user/UserSettings.jsx";
 import { LoadingSpinner } from "../loadingSpinner.jsx";
 import { PasswordSettings } from "./PasswordSettings";
-import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"
+import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"; // Importado correctamente
 
-import '../../pages/dashboard/dashboardPage.css'
+import '../../pages/dashboard/dashboardPage.css';
 
 export const Settings = () => {
-    
-    const { userSettings, isFetching, saveSettings } = useUserSettings()
+    const { userSettings, isFetching, saveSettings } = useUserSettings();
 
-    if(isFetching){
-        return <LoadingSpinner/>
+    if (isFetching) {
+        return <LoadingSpinner />;
     }
 
     return (
-        <div className="settings-container">
-            <span>Settings</span>
-            <UserSettings settings={userSettings} saveSettings={saveSettings}/>
-            <PasswordSettings />
+        <div className="settings-wrapper">
             <SidebarDemo />
+            <div className="settings-container">
+                <span>Settings</span>
+                <UserSettings settings={userSettings} saveSettings={saveSettings} />
+                <PasswordSettings />
+            </div>
         </div>
-    )
-}
+    );    
+};

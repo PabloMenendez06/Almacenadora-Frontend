@@ -62,7 +62,7 @@ export const ClientPage = () => {
     const { name, email, nit, phone } = editClient;
 
     if (!name || !email || !nit || !phone) {
-      setError("Todos los campos son obligatorios !");
+      setError("Todos los campos son obligatorios");
       return;
     }
 

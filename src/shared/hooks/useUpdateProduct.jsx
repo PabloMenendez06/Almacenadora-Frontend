@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { updateProductRequest } from "../../services";
-import toast from "react-hot-toast";
+import { updateProduct as updateProductRequest } from "../../services";
 
 export const useUpdateProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,18 +10,20 @@ export const useUpdateProduct = () => {
       const response = await updateProductRequest(id, productData);
       setIsLoading(false);
 
-      if (response.error) {
-        toast.error(response.error?.response?.data?.message || "Error al actualizar el producto.");
-        return;
-      }
-
-      toast.success("Producto actualizado exitosamente");
+      return response;
     } catch (error) {
       setIsLoading(false);
-      console.error("Error al actualizar producto:", error);
-      toast.error("Ocurrió un error al actualizar el producto.");
+
+      const status = error.response?.status;
+      const message = error.response?.data?.message || "Error desconocido";
+      console.error("Error al actualizar producto:", error.response || error);
+
+      throw { status, message };
     }
   };
 
-  return { updateProduct, isLoading };
+  return {
+    updateProduct,
+    isLoading,
+  };
 };
