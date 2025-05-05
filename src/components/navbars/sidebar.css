@@ -1,32 +1,30 @@
-/* Asegurarse de que el contenedor del cuerpo ocupe toda la pantalla */
 body {
   height: 100%;
   margin: 0;
-  background-color: #f4f1ea; /* Fondo crema claro */
-  overflow: hidden; /* Evita barras de desplazamiento globales */
+  background-color: #f4f1ea; 
+  overflow: hidden;
 }
 
 .sidebar-body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: hsl(200, 21%, 25%); /* Azul grisáceo oscuro */
-  border-right: 1px solid #242739; /* Borde aún más oscuro */
-  box-shadow: 4px 0 10px rgba(36, 39, 57, 0.2); /* Sombra sutil */
+  background-color: hsl(200, 21%, 25%); 
+  border-right: 1px solid #242739; 
+  box-shadow: 4px 0 10px rgba(36, 39, 57, 0.2); 
   padding: 1.5rem;
   z-index: 40;
   transition: all 0.3s ease;
 }
 
-/* Estilo del logo */
 .sidebar-logo {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #5E8271; /* Verde grisáceo */
+  border-bottom: 2px solid #5E8271;
   font-weight: 600;
-  color: #FFFBF0; /* Texto claro */
+  color: #FFFBF0; 
 }
 
 .sidebar-links {
@@ -42,7 +40,7 @@ body {
   align-items: center;
   padding: 0.75rem 1rem;
   font-size: 1.1rem;
-  color: #FFFBF0; /* Texto claro */
+  color: #FFFBF0; 
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
@@ -50,25 +48,23 @@ body {
 }
 
 .sidebar-link:hover {
-  background-color: #5E8271; /* Verde al hover */
+  background-color: #5E8271; 
   transform: translateX(5px);
 }
 
-/* Estilo para el pie de la barra lateral */
 .sidebar-footer {
-  border-top: 2px solid #5E8271; /* Verde */
+  border-top: 2px solid #5E8271;
   padding-top: 1rem;
   font-size: 0.9rem;
-  color: #9E9C71; /* Beige para texto secundario */
+  color: #9E9C71; 
   text-align: center;
 }
 
-/* Estilo para el avatar */
 .sidebar-avatar {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   object-fit: cover;
-  border: 2px solid #9E9C71; /* Borde beige */
-  box-shadow: 0 0 5px rgba(36, 39, 57, 0.3); /* Sombra oscura */
+  border: 2px solid #9E9C71; 
+  box-shadow: 0 0 5px rgba(36, 39, 57, 0.3); 
 }
