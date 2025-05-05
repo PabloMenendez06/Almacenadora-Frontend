@@ -4,8 +4,8 @@ export const Input = ({
   showErrorMessage,
   validationMessage,
   textArea,
-  value,
-  onChange,
+  value, 
+  onChange, 
   ...registerProps
 }) => {
   return (

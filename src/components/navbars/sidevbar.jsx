@@ -45,7 +45,6 @@ export function SidebarDemo() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      {/* Sidebar */}
       <div className={cn("transition-all duration-300", open ? "w-64" : "w-20")}>
         <Sidebar open={open} setOpen={setOpen}>
           <SidebarBody className="sidebar-body justify-between gap-10">
@@ -82,7 +81,6 @@ export function SidebarDemo() {
         </Sidebar>
       </div>
 
-      {/* Dashboard */}
       <div className="flex flex-1 transition-all duration-300 overflow-hidden">
         <Dashboard />
       </div>
@@ -91,7 +89,7 @@ export function SidebarDemo() {
 }
 
 const Logo = () => (
-  <a href="/" className="flex items-center space-x-2 py-1 text-sm font-normal text-black">
+  <a href="/*" className="flex items-center space-x-2 py-1 text-sm font-normal text-black">
     <div className="h-5 w-6 rounded bg-black dark:bg-white" />
     <img src={logo} className="sidebar-avatar" alt="logo" />
   </a>

@@ -14,11 +14,13 @@ export const Settings = () => {
     }
 
     return (
-        <div className="settings-container">
-            <span>Settings</span>
-            <UserSettings settings={userSettings} saveSettings={saveSettings} />
-            <PasswordSettings />
+        <div className="settings-wrapper">
             <SidebarDemo />
+            <div className="settings-container">
+                <span>Settings</span>
+                <UserSettings settings={userSettings} saveSettings={saveSettings} />
+                <PasswordSettings />
+            </div>
         </div>
-    );
+    );    
 };

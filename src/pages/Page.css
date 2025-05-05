@@ -399,3 +399,32 @@ button:disabled {
     gap: 1rem;
   }
 }
+
+.settings-wrapper {
+  display: flex;
+  height: 100vh;
+  background-color: #FFFBF0;
+}
+
+.sidebar-demo {
+  flex-shrink: 0;
+  width: 250px;
+}
+
+.settings-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  padding: 2rem;
+  background-color: #FFFBF0;
+  overflow-y: auto;
+}
+
+.settings-container > span {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #33454E;
+  margin-bottom: 1rem;
+}

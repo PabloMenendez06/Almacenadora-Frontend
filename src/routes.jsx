@@ -5,6 +5,7 @@ import {ProductPage} from './pages/product';
 import {ClientPage} from './pages/client';
 import { CategoryPage } from './pages/category'; 
 import { ProviderPage } from './pages/provider';
+import { Settings } from './components/settings/Settings';
 
 
 
@@ -16,6 +17,7 @@ const routes = [
     {path: '/product', element: <ProductPage />},
     {path: '/client', element: <ClientPage />},
     {path: '/auth', element: <Auth />},
+    { path: '/settings', element: <Settings /> },
     {path: '/*', element: <DashboardPage />}
 ]
 
