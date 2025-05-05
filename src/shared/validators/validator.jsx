@@ -23,3 +23,24 @@ export const productSchema = yup.object().shape({
   entryDate: yup.date().required("La fecha de entrada es obligatoria"),
   expirationDate: yup.date().required("La fecha de expiración es obligatoria"),
 });
+
+export const withdrawSchema = yup.object({
+  productId: yup.string().required("Producto obligatorio"),
+  quantity: yup
+    .number()
+    .required("Cantidad obligatoria")
+    .positive("Debe ser mayor que 0")
+    .integer("Debe ser un número entero"),
+  motive: yup.string().required("Motivo obligatorio"),
+  destiny: yup.string().required("Destino obligatorio"),
+});
+
+export const registerProductSchema = yup.object({
+  productId: yup.string().required("Producto obligatorio"),
+  quantity: yup
+    .number()
+    .required("Cantidad obligatoria")
+    .positive("Debe ser mayor que 0")
+    .integer("Debe ser un número entero"),
+});
+

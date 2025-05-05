@@ -7,6 +7,7 @@ import { CategoryPage } from './pages/category';
 import { ProviderPage } from './pages/provider';
 
 
+
 const routes = [
     {path: '/category', element: <CategoryPage />},
     {path: '/provider', element: <ProviderPage />},

@@ -6,7 +6,6 @@ body {
   overflow: hidden; /* Evita barras de desplazamiento globales */
 }
 
-/* Estilo para la barra lateral */
 .sidebar-body {
   display: flex;
   flex-direction: column;

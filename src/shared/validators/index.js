@@ -1,3 +1,6 @@
 export { loginSchema, registerSchema} from "./AuthValidator.jsx";
 export {userSchema} from "./SettingsValidator.jsx"
-export {providerSchema,productSchema } from "./validator.jsx"
+export * from "./validator.jsx"
+export * from './validatePassword.jsx';
+export * from './validateName.jsx';
+export * from './validateUsername.jsx';
