@@ -1,8 +1,8 @@
 import { DashboardPage } from './pages/dashboard';
 import { Auth } from './pages/auth';
-import {HistoryPage} from './pages/history';
-import {ProductPage} from './pages/product';
-import {ClientPage} from './pages/client';
+import { HistoryPage } from './pages/history';
+import { ProductPage } from './pages/product';
+import { ClientPage } from './pages/client';
 import { CategoryPage } from './pages/category'; 
 import { ProviderPage } from './pages/provider';
 import { Settings } from './components/settings/Settings';
@@ -21,4 +21,4 @@ const routes = [
     {path: '/*', element: <DashboardPage />}
 ]
 
-export default routes
+export default routes;

@@ -10,7 +10,8 @@ import {
   IconCalendarUser,
   IconUserBolt,
   IconAlignBoxCenterMiddle,
-  IconApple
+  IconApple,
+  IconHomeStats
 } from "@tabler/icons-react";
 import { TiClipboard } from "react-icons/ti";
 import { cn } from "../../lib/utils";
@@ -36,6 +37,7 @@ export function SidebarDemo() {
     { label: "History", onClick: () => handleNavigate("/history"), icon: <TiClipboard className="icon" /> },
     { label: "Products", onClick: () => handleNavigate("/product"), icon: <IconApple className="icon" /> },
     { label: "Clients", onClick: () => handleNavigate("/client"), icon: <IconCalendarUser className="icon" /> },
+    { label: "Graphics", onClick: () => handleNavigate("/product-stats"), icon: <IconHomeStats className="icon" /> },
     {
       label: isLogged ? "Logout" : "Login",
       onClick: isLogged ? handleLogout : () => handleNavigate("/auth"),
