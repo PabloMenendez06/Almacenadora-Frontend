@@ -51,6 +51,9 @@ export const WithdrawProduct = ({ onClose }) => {
       await withdrawProduct(productId, rest);
       toast.success("Retiro registrado");
       onClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error al registrar retiro:", error);
       toast.error("Error al registrar el retiro");

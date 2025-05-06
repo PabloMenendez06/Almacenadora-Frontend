@@ -18,8 +18,8 @@ export const Settings = () => {
             <SidebarDemo />
             <div className="settings-container">
                 <span>Settings</span>
-                <H1>contactase con el admin para que le haga admin (Desde el Backend)</H1 >
-                <H1>contactase con el admin para que elimine usuarios (Desde el Backend)</H1 >
+                <h1>contactase con el admin para que le haga admin (Desde el Backend)</h1 >
+                <h1>contactase con el admin para que elimine usuarios (Desde el Backend)</h1 >
                 <UserSettings settings={userSettings} saveSettings={saveSettings} />
                 <PasswordSettings />
             </div>

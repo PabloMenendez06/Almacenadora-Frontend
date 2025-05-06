@@ -61,6 +61,7 @@ export const addCategory = async (categoryName) => {
 
 export const createProvider = async data => {
   const token = JSON.parse(localStorage.getItem('user'))?.token; 
+  console.log(token)
   try {
       const response = await apiClient.post('/provider', data, {
         headers: {
