@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout } from "../shared/hooks";
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:3333/storagePenguin/v1/',
+    baseURL: 'http://localhost:3333/almacenadoraSystem/v1/',
     timeout: 5000
 })
 
@@ -202,6 +202,20 @@ export const searchProducts = async (name) => {
   }
 };
 
+export const searchUsers = async (name) => {
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  try {
+    const response = await apiClient.get(`/user/search/${name}`, {
+      headers: {
+        "x-token": token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al buscar user:", error.response?.data || error.message);
+    return { error: true, response: error.response };
+  }
+};
 export const filterProducts = async (categoryName) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
   try {

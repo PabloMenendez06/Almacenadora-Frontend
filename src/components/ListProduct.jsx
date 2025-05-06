@@ -14,7 +14,7 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
   const [viewMode, setViewMode] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const shownMessages = useRef(new Set()); // <--- Corrección clave
+  const shownMessages = useRef(new Set()); 
 
   const { products: allProducts, isLoading: loadingAll, refetch } = useListProducts();
   const { products: recentProducts, isLoading: loadingRecent } = useRecentProducts();
@@ -94,10 +94,14 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
       const daysToExpire =
         (new Date(product.expirationDate) - new Date()) / (1000 * 60 * 60 * 24);
 
-      if (daysToExpire < 7) {
-        const expireMsg = `⏰ ${product.name} está por expirar en (${Math.ceil(
-          daysToExpire
-        )} días).`;
+      if (daysToExpire < 0) {
+        const expiredMsg = `⚠️ ${product.name} ya está expirado.`;
+        if (!shownMessages.current.has(expiredMsg)) {
+          toast.error(expiredMsg);
+          shownMessages.current.add(expiredMsg);
+        }
+      } else if (daysToExpire < 7) {
+        const expireMsg = `⏰ ${product.name} está por expirar en (${Math.ceil(daysToExpire)} días).`;
         if (!shownMessages.current.has(expireMsg)) {
           toast.error(expireMsg);
           shownMessages.current.add(expireMsg);

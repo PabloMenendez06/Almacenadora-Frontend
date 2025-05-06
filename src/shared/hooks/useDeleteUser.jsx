@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { deleteUser as deleteUserService } from "../../services"; 
+import { deleteUser as deleteUserService } from "../../services";
+import toast from "react-hot-toast";
 
 export const useDeleteUser = () => {
   const [loading, setLoading] = useState(false);
 
-  const deleteUser = async ({ password }) => {
+  const deleteUser = async ({ userId, password }) => {
     try {
       setLoading(true);
-      const userId = JSON.parse(localStorage.getItem("user"))?._id;
       const res = await deleteUserService(userId, { password });
 
       if (res?.data?.success) {
