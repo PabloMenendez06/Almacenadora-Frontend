@@ -8,7 +8,7 @@ import "../Page.css";
 
 export const HistoryPage = () => {
   const [showForm, setShowForm] = useState(false);
-  const [formType, setFormType] = useState(null); // "register" | "withdraw"
+  const [formType, setFormType] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleOpenForm = useCallback((type) => {
