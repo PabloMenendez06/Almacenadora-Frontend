@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteUser as deleteUserService } from "../../services"; // ajusta el path
+import { deleteUser as deleteUserService } from "../../services"; 
 
 export const useDeleteUser = () => {
   const [loading, setLoading] = useState(false);

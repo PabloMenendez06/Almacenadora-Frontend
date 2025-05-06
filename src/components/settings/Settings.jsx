@@ -2,7 +2,7 @@ import { useUserSettings } from "../../shared/hooks";
 import { UserSettings } from "../user/UserSettings.jsx";
 import { LoadingSpinner } from "../loadingSpinner.jsx";
 import { PasswordSettings } from "./PasswordSettings";
-import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"; // Importado correctamente
+import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"; 
 
 import '../../pages/dashboard/dashboardPage.css';
 
@@ -18,6 +18,8 @@ export const Settings = () => {
             <SidebarDemo />
             <div className="settings-container">
                 <span>Settings</span>
+                <H1>contactase con el admin para que le haga admin (Desde el Backend)</H1 >
+                <H1>contactase con el admin para que elimine usuarios (Desde el Backend)</H1 >
                 <UserSettings settings={userSettings} saveSettings={saveSettings} />
                 <PasswordSettings />
             </div>

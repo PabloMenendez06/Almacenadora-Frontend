@@ -229,7 +229,19 @@ export const deleteProvider = async (id) => {
     return { error: true, response: error.response };
   }
 };
-
+export const deleteUser = async (id) => {
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  try {
+    const response = await apiClient.delete(`/user/eliminar/${id}`, {
+      headers: {
+        'x-token': token,
+      },
+    });
+    return response;
+  } catch (error) {
+    return { error: true, response: error.response };
+  }
+};
 export const deleteProduct = async (id) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
   try {

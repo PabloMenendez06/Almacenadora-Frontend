@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   useListProducts,
   useDeleteProduct,
   useRecentProducts,
   useFilterProductsByCategory,
+  useSearchProductsByName
 } from "../shared/hooks";
 import { LoadingSpinner } from "./loadingSpinner";
 import toast from "react-hot-toast";
 
 export const ListProducts = ({ setProductToEdit, setShowForm }) => {
   const [selected, setSelected] = useState([]);
-  const [viewMode, setViewMode] = useState("all"); // 'all', 'recent', 'category'
+  const [viewMode, setViewMode] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+  const shownMessages = useRef(new Set()); // <--- Corrección clave
 
   const { products: allProducts, isLoading: loadingAll, refetch } = useListProducts();
   const { products: recentProducts, isLoading: loadingRecent } = useRecentProducts();
@@ -20,6 +23,11 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
     isLoading: loadingFiltered,
     filter,
   } = useFilterProductsByCategory();
+  const {
+    products: filteredProductsN,
+    isLoading: loadingFilteredN,
+    search,
+  } = useSearchProductsByName();
   const { deleteProduct, isDeleting } = useDeleteProduct();
 
   const toggleSelect = (id) =>
@@ -40,11 +48,9 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
 
   const handleEdit = () => {
     if (selected.length === 0) return toast.error("Selecciona un producto para editar");
-
     const productList = getActiveProducts();
     const productToEdit = productList.find((p) => p._id === selected[0]);
     if (!productToEdit) return toast.error("Producto no encontrado");
-
     setProductToEdit(productToEdit);
     setShowForm(true);
   };
@@ -52,12 +58,14 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
   const getActiveProducts = () => {
     if (viewMode === "recent") return recentProducts;
     if (viewMode === "category") return filteredProducts;
+    if (viewMode === "name") return filteredProductsN;
     return allProducts;
   };
 
   const isLoading =
     (viewMode === "recent" && loadingRecent) ||
     (viewMode === "category" && loadingFiltered) ||
+    (viewMode === "name" && loadingFilteredN) ||
     (viewMode === "all" && loadingAll);
 
   const handleCategorySearch = () => {
@@ -65,6 +73,38 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
     setSelected([]);
     filter(categoryFilter);
   };
+
+  const handleNameSearch = () => {
+    if (!nameFilter) return toast.error("Ingresa un nombre");
+    setSelected([]);
+    search(nameFilter);
+  };
+
+  useEffect(() => {
+    const activeProducts = getActiveProducts();
+
+    activeProducts.forEach((product) => {
+      if (product.stock < 5) {
+        const stockMsg = `🛒 ${product.name} tiene bajo stock (${product.stock}).`;
+        if (!shownMessages.current.has(stockMsg)) {
+          toast.error(stockMsg);
+          shownMessages.current.add(stockMsg);
+        }
+      }
+      const daysToExpire =
+        (new Date(product.expirationDate) - new Date()) / (1000 * 60 * 60 * 24);
+
+      if (daysToExpire < 7) {
+        const expireMsg = `⏰ ${product.name} está por expirar en (${Math.ceil(
+          daysToExpire
+        )} días).`;
+        if (!shownMessages.current.has(expireMsg)) {
+          toast.error(expireMsg);
+          shownMessages.current.add(expireMsg);
+        }
+      }
+    });
+  }, [viewMode, allProducts, recentProducts, filteredProducts, filteredProductsN]);
 
   return (
     <div className="list-product-container">
@@ -77,11 +117,14 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
             onChange={(e) => {
               setViewMode(e.target.value);
               setSelected([]);
+              setCategoryFilter("");
+              setNameFilter("");
             }}
           >
             <option value="all">Todos</option>
             <option value="recent">Recientes</option>
             <option value="category">Por Categoría</option>
+            <option value="name">Por Nombre</option>
           </select>
         </label>
 
@@ -95,6 +138,21 @@ export const ListProducts = ({ setProductToEdit, setShowForm }) => {
               className="input"
             />
             <button onClick={handleCategorySearch} className="search-button">
+              Buscar
+            </button>
+          </div>
+        )}
+
+        {viewMode === "name" && (
+          <div style={{ display: "inline-block", marginLeft: "1rem" }}>
+            <input
+              type="text"
+              placeholder="Nombre"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
+              className="input"
+            />
+            <button onClick={handleNameSearch} className="search-button">
               Buscar
             </button>
           </div>
