@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUpdateUser, useSearchUsersByName } from "../../shared/hooks";
 import toast from "react-hot-toast";
+import { Input } from "../Input";
 
 export const RoleSettings = () => {
   const [query, setQuery] = useState("");
@@ -9,8 +10,11 @@ export const RoleSettings = () => {
   const { users = [], isLoading: isSearching, search } = useSearchUsersByName();
   const { updateUser, loading: isUpdating } = useUpdateUser();
 
-  const handleSearch = () => {
-    if (query.trim()) search(query);
+  const handleSearch = async (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    if (value.trim().length === 0) return;
+    await search(value);
   };
 
   const handleSelectUser = async (user) => {
@@ -21,10 +25,7 @@ export const RoleSettings = () => {
     }
 
     try {
-      console.log("Usuario seleccionado para actualizar rol:", user);
-      const updated = await updateUser({ _id: user.uid,role: "ADMIN" });
-      console.log("Respuesta del backend:", updated);
-
+      const updated = await updateUser({ _id: user.uid, role: "ADMIN" });
       toast.success(`${updated.username} ahora es ADMIN`);
       setSelectedUser(updated);
     } catch (error) {
@@ -37,32 +38,27 @@ export const RoleSettings = () => {
     <div>
       <h2>Asignar rol ADMIN automáticamente</h2>
 
-      <input
+      <Input
+        field="search"
+        label="Buscar Usuario"
         type="text"
-        placeholder="Buscar usuario por ID o nombre"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleSearch}
       />
-      <button onClick={handleSearch} disabled={isSearching}>
-        Buscar
-      </button>
 
       {isSearching && <p>Buscando...</p>}
 
       {!isSearching && users.length > 0 && (
         <ul className="search-results">
-          {users.map((user) => {
-            console.log(user);
-            return (
-              <li
-                key={user._id || user.username}
-                onClick={() => handleSelectUser(user)}
-                className={`search-item ${selectedUser?.username === user.username ? "selected" : ""}`}
-              >
-                {user.username} - {user.email}
-              </li>
-            );
-          })}
+          {users.map((user) => (
+            <li
+              key={user._id || user.username}
+              onClick={() => handleSelectUser(user)}
+              className={`search-item ${selectedUser?.username === user.username ? "selected" : ""}`}
+            >
+              {user.username} - {user.email}
+            </li>
+          ))}
         </ul>
       )}
 
@@ -73,7 +69,7 @@ export const RoleSettings = () => {
           </p>
           <p>Correo: <strong>{selectedUser.email}</strong></p>
           <p>Rol actual: <strong>{selectedUser.role}</strong></p>
-          <p>ID: <strong>{selectedUser._id}</strong></p>
+          <p>ID: <strong>{selectedUser.uid}</strong></p>
         </div>
       )}
     </div>

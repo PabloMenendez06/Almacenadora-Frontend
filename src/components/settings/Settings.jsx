@@ -14,26 +14,30 @@ export const Settings = () => {
         return <LoadingSpinner />;
     }
 
-    //const isAdmin = userSettings?.role === "ADMIN";
+    const user = JSON.parse(localStorage.getItem("user"));
+    const isAdmin = user?.role === "ADMIN";
 
     return (
         <div className="settings-wrapper">
             <SidebarDemo />
             <div className="settings-container">
                 <span>Settings</span>
-                
+
+                {!isAdmin && (
                     <>
-                        <h1>Contacte al administrador para ser cambiado a ADMIN </h1>
-                        <h1>Contacte al administrador para eliminar usuarios</h1>
+                        <p className="admin-msg">Contacte al administrador para cambiar su rol.</p>
                     </>
-                
+                )}
+
                 <UserSettings settings={userSettings} saveSettings={saveSettings} />
                 <PasswordSettings />
+
+                {isAdmin && (
                     <>
                         <UserSearchAndDelete />
                         <RoleSettings />
                     </>
-                
+                )}
             </div>
         </div>
     );
