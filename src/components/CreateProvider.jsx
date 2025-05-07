@@ -50,6 +50,9 @@ export const CreateProvider = ({ providerToEdit, onClose }) => {
         await registerProvider(data.name, data.email, data.number);
       }
       onClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error al enviar proveedor:", error);
       toast.error("Error al procesar el proveedor.");
@@ -60,7 +63,7 @@ export const CreateProvider = ({ providerToEdit, onClose }) => {
   return (
     <div className="register-container">
       <h1>{providerToEdit ? "Editar Proveedor" : "Registrar Proveedor"}</h1>
-      <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form-panel-provider" onSubmit={handleSubmit(onSubmit)}>
         <Input
           field="name"
           label="Nombre"

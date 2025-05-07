@@ -2,9 +2,10 @@ import { useUserSettings } from "../../shared/hooks";
 import { UserSettings } from "../user/UserSettings.jsx";
 import { LoadingSpinner } from "../loadingSpinner.jsx";
 import { PasswordSettings } from "./PasswordSettings";
-import { SidebarDemo } from "../../components/navbars/sidevbar.jsx"; // Importado correctamente
-
-import '../../pages/dashboard/dashboardPage.css';
+import { SidebarDemo } from "../../components/navbars/sidevbar.jsx";
+import { UserSearchAndDelete } from "./DeleteSettings.jsx";
+import { RoleSettings } from "./RoleSettigs.jsx";
+import "../../pages/dashboard/dashboardPage.css";
 
 export const Settings = () => {
     const { userSettings, isFetching, saveSettings } = useUserSettings();
@@ -13,14 +14,27 @@ export const Settings = () => {
         return <LoadingSpinner />;
     }
 
+    //const isAdmin = userSettings?.role === "ADMIN";
+
     return (
         <div className="settings-wrapper">
             <SidebarDemo />
             <div className="settings-container">
                 <span>Settings</span>
+                
+                    <>
+                        <h1>Contacte al administrador para ser cambiado a ADMIN </h1>
+                        <h1>Contacte al administrador para eliminar usuarios</h1>
+                    </>
+                
                 <UserSettings settings={userSettings} saveSettings={saveSettings} />
                 <PasswordSettings />
+                    <>
+                        <UserSearchAndDelete />
+                        <RoleSettings />
+                    </>
+                
             </div>
         </div>
-    );    
+    );
 };

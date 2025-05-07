@@ -6,19 +6,19 @@ import { ClientPage } from './pages/client';
 import { CategoryPage } from './pages/category'; 
 import { ProviderPage } from './pages/provider';
 import { Settings } from './components/settings/Settings';
-import { StatisticsPage } from './pages/Stats/index';
-import { PrivateRoute } from './components/PrivateRoute';
+
+
 
 const routes = [
-  { path: '/category', element: <PrivateRoute><CategoryPage /></PrivateRoute> },
-  { path: '/provider', element: <PrivateRoute><ProviderPage /></PrivateRoute> },
-  { path: '/product', element: <PrivateRoute><ProductPage /></PrivateRoute> },
-  { path: '/history', element: <PrivateRoute><HistoryPage /></PrivateRoute> },
-  { path: '/client', element: <PrivateRoute><ClientPage /></PrivateRoute> },
-  { path: '/settings', element: <PrivateRoute><Settings /></PrivateRoute> },
-  { path: '/product-stats', element: <PrivateRoute><StatisticsPage /></PrivateRoute> },
-  { path: '/auth', element: <Auth /> },
-  { path: '/*', element: <PrivateRoute><DashboardPage /></PrivateRoute> }
-];
+    {path: '/category', element: <CategoryPage />},
+    {path: '/provider', element: <ProviderPage />},
+    {path: '/product', element: <ProductPage/>},
+    {path: '/history', element: <HistoryPage />},
+    {path: '/product', element: <ProductPage />},
+    {path: '/client', element: <ClientPage />},
+    {path: '/auth', element: <Auth />},
+    { path: '/settings', element: <Settings /> },
+    {path: '/*', element: <DashboardPage />}
+]
 
 export default routes;

@@ -48,6 +48,9 @@ export const RegisterProduct = ({ onClose }) => {
       await registerProduct(selectedProduct._id, data);
       toast.success("Producto registrado");
       onClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error al registrar producto:", error);
       toast.error("Error al registrar el producto");

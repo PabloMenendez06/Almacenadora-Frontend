@@ -49,6 +49,7 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
         entryDate: formatDate(productToEdit.entryDate),
         expirationDate: formatDate(productToEdit.expirationDate),
       });
+      
     } else {
       reset({
         name: "",
@@ -84,6 +85,9 @@ export const CreateProduct = ({ productToEdit, onClose }) => {
         toast.success("Producto registrado exitosamente");
       }
       onClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error al enviar producto:", error);
       const { status, message } = error || {};
