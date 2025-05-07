@@ -27,7 +27,7 @@ export const UserSearchAndDelete = () => {
       return toast.error("Debe seleccionar un usuario y escribir su contraseña");
     }
     try {
-      await deleteUser({ userId: selectedUser._id, password });
+      await deleteUser({ userId: selectedUser.uid, password });
       toast.success(`Usuario ${selectedUser.name} eliminado correctamente`);
       setSelectedUser(null);
       setPassword("");
