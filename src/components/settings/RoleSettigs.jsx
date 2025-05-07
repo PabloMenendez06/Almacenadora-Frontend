@@ -21,13 +21,8 @@ export const RoleSettings = () => {
     }
 
     try {
-      // Log de depuración para verificar los datos del usuario seleccionado
       console.log("Usuario seleccionado para actualizar rol:", user);
-
-      // Enviamos los datos al backend para actualizar el rol
-      const updated = await updateUser({ _id: user.uid, role: "ADMIN" });
-
-      // Log de depuración para verificar los datos de la respuesta
+      const updated = await updateUser({ _id: user.uid,role: "ADMIN" });
       console.log("Respuesta del backend:", updated);
 
       toast.success(`${updated.username} ahora es ADMIN`);
@@ -57,7 +52,6 @@ export const RoleSettings = () => {
       {!isSearching && users.length > 0 && (
         <ul className="search-results">
           {users.map((user) => {
-            // Log de depuración para verificar los datos del usuario listado
             console.log(user);
             return (
               <li
