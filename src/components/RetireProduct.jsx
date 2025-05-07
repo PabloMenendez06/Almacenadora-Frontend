@@ -46,11 +46,20 @@ export const WithdrawProduct = ({ onClose }) => {
         toast.error("Selecciona un producto");
         return;
       }
-
+  
+      const quantityRequested = Number(data.quantity);
+      const stockAvailable = Number(selectedProduct.stock);
+  
+      if (quantityRequested > stockAvailable) {
+        toast.error(`Stock insuficiente. Disponible: ${stockAvailable}`);
+        return;
+      }
+  
       const { productId, ...rest } = data;
       await withdrawProduct(productId, rest);
       toast.success("Retiro registrado");
       onClose();
+  
       setTimeout(() => {
         window.location.reload();
       }, 500);
@@ -59,6 +68,7 @@ export const WithdrawProduct = ({ onClose }) => {
       toast.error("Error al registrar el retiro");
     }
   };
+  
 
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
