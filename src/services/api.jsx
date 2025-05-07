@@ -1,26 +1,26 @@
 import axios from "axios";
 import { logout } from "../shared/hooks";
 
-const apiClient = axios.create({
-    baseURL: 'http://localhost:3333/almacenadoraSystem/v1/',
-    timeout: 5000
-})
+  const apiClient = axios.create({
+      baseURL: 'http://localhost:3333/almacenadoraSystem/v1/',
+      timeout: 5000
+  })
 
-apiClient.interceptors.request.use(
-  (config) => {
-    const useUserDetails = localStorage.getItem('user');
+  apiClient.interceptors.request.use(
+    (config) => {
+      const useUserDetails = localStorage.getItem('user');
 
-    if (useUserDetails) {
-      const token = JSON.parse(useUserDetails).token;
-      config.headers['x-token'] = token; 
+      if (useUserDetails) {
+        const token = JSON.parse(useUserDetails).token;
+        config.headers['x-token'] = token; 
+      }
+
+      return config;
+    },
+    (e) => {
+      return Promise.reject(e);
     }
-
-    return config;
-  },
-  (e) => {
-    return Promise.reject(e);
-  }
-);
+  );
 
 export const login = async (data) => {
     try {
@@ -205,17 +205,21 @@ export const searchProducts = async (name) => {
 export const searchUsers = async (name) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
   try {
-    const response = await apiClient.get(`/user/search/${name}`, {
+    const response = await apiClient.get("/user/search", {
+      params: { username: name }, 
       headers: {
-        "x-token": token,
+        "x-token": token, 
       },
     });
-    return response.data;
+    return response.data; 
   } catch (error) {
     console.error("Error al buscar user:", error.response?.data || error.message);
     return { error: true, response: error.response };
   }
 };
+
+
+
 export const filterProducts = async (categoryName) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
   try {
@@ -309,12 +313,26 @@ export const deleteClient = async (id) => {
 
 export const updateUser = async (data) => {
   try {
-    const userId = JSON.parse(localStorage.getItem("user"))?._id;
-    return await apiClient.put(`/user/editar/${userId}`, data);  
+    const user = JSON.parse(localStorage.getItem("user"));
+    const isAdmin = user?.role === "ADMIN";
+
+    
+    const userIdToUpdate = isAdmin ? (data._id || data.uid) : user._id;
+
+    if (!userIdToUpdate) {
+      throw new Error("No se proporcionó un ID válido para actualizar");
+    }
+
+    
+    return await apiClient.put(`/user/editar/${userIdToUpdate}`, data);
   } catch (e) {
+    console.error("Error en la solicitud:", e);
     return { error: true, e };
   }
 };
+
+
+
 
 export const changePassword = async (data) => {
   try {

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { updateUser as updateUserService } from "../../services"; // ajusta el path según tu estructura
+import { updateUser as updateUserService } from "../../services"; 
+import toast from "react-hot-toast";
 
 export const useUpdateUser = () => {
   const [loading, setLoading] = useState(false);
@@ -7,7 +8,10 @@ export const useUpdateUser = () => {
   const updateUser = async (data) => {
     try {
       setLoading(true);
+      console.log("Datos que se envían al backend:", data); 
+
       const res = await updateUserService(data);
+
       if (res?.data?.success) {
         toast.success("Usuario actualizado correctamente");
         return res.data.user;
@@ -28,3 +32,4 @@ export const useUpdateUser = () => {
     loading,
   };
 };
+
