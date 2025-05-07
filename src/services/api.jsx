@@ -61,7 +61,6 @@ export const addCategory = async (categoryName) => {
 
 export const createProvider = async data => {
   const token = JSON.parse(localStorage.getItem('user'))?.token; 
-  console.log(token)
   try {
       const response = await apiClient.post('/provider', data, {
         headers: {
@@ -314,22 +313,33 @@ export const deleteClient = async (id) => {
 export const updateUser = async (data) => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.token;
     const isAdmin = user?.role === "ADMIN";
 
-    
     const userIdToUpdate = isAdmin ? (data._id || data.uid) : user._id;
 
     if (!userIdToUpdate) {
       throw new Error("No se proporcionó un ID válido para actualizar");
     }
 
-    
-    return await apiClient.put(`/user/editar/${userIdToUpdate}`, data);
+    console.log("Actualizando usuario con ID:", userIdToUpdate);
+    console.log("Payload enviado:", data);
+
+    return await apiClient.put(
+      `/user/editar/${userIdToUpdate}`,
+      data,
+      {
+        headers: {
+          'x-token': token,
+        },
+      }
+    );
   } catch (e) {
     console.error("Error en la solicitud:", e);
     return { error: true, e };
   }
 };
+
 
 
 
