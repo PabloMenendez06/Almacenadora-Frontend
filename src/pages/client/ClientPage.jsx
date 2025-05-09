@@ -127,8 +127,8 @@ export const ClientPage = () => {
                   <p><strong>Correo electrónico:</strong> {client.email}</p>
                   <p><strong>NIT:</strong> {client.nit}</p>
                   <p><strong>Teléfono:</strong> {client.phone}</p>
-                  <button onClick={() => handleEditClient(client)}>Editar</button>
-                  <button onClick={() => handleDeleteClient(client._id)}>Eliminar</button>
+                  <button className="edit-button" onClick={() => handleEditClient(client)}>Editar</button>
+                  <button className="delete-button" onClick={() => handleDeleteClient(client._id)}>Eliminar</button>
                 </li>
               ))
             ) : (
