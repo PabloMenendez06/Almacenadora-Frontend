@@ -1,0 +1,160 @@
+.client-page-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(36, 39, 57, 0.1);
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+h2 {
+  text-align: center;
+  color: #242739;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.client-form input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #9E9C71;
+  background-color: #fefcf5;
+  margin-left: 4px;
+  margin-top: 6px;
+  color: #242739;
+}
+
+.client-form button {
+  padding: 12px;
+  background-color: #5E8271;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+  margin-left: 4px;
+  margin-top: 4px;
+}
+
+.client-form button:hover {
+  background-color: #4f6e5f;
+}
+
+.error-message {
+  color: #f44336;
+  margin-bottom: 15px;
+}
+
+.client-list {
+  margin-top: 40px;
+}
+
+.client-list ul {
+  list-style-type: none;
+  padding-left: 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.client-list .client-item {
+  background-color: #f8f7f3;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(36, 39, 57, 0.08);
+  transition: background-color 0.3s ease;
+}
+
+.client-item:hover {
+  background-color: #f1efe6;
+}
+
+.client-item p {
+  margin: 5px 0;
+  color: #242739;
+}
+
+.edit-button {
+  background-color: #4D91C6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #3578A6;
+}
+
+.edit-button:active {
+  background-color: #25587C;
+}
+
+.delete-button {
+  background-color: #D9534F;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #C9302C;
+}
+
+.delete-button:active {
+  background-color: #AC2925;
+}
+
+.sidebar-demo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #242739;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-demo .sidebar-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-demo .sidebar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-demo .sidebar-links {
+  margin-top: 20px;
+}
+
+.sidebar-demo .sidebar-link {
+  color: #FFFBF0;
+  padding: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.sidebar-demo .sidebar-link:hover {
+  background-color: #33454E;
+}
